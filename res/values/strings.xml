@@ -1,6 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Android2D</string>
     <string name="game_over">GAME OVER</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="play">Play</string>
 
 </resources>

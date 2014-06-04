@@ -36,7 +36,8 @@ public class BaseLevelActivity extends Activity {
 
 	}
 
-	public void onGameOver() {
+	public void onGameOver(int score) {
+		gameOverView.setScore(score);
 		setContentView(gameOverView);
 		gameOverView.requestFocus();
 	}

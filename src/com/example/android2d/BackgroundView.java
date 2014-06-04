@@ -5,7 +5,9 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.graphics.Point;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -28,10 +30,12 @@ public class BackgroundView extends View {
 	private boolean spawnFruits;
 
 	private Bitmap pause;
-	private Paint pausePaint;
+	private Paint paint;
 	private boolean paused;
 
 	private int orientation;
+	
+	private int score;
 
 	public BackgroundView(Context context, Point snakePosition,
 			int numberOfBlocks, boolean spawnFruits, int levelResourceId) {
@@ -41,6 +45,7 @@ public class BackgroundView extends View {
 		this.numberOfBlocks = numberOfBlocks;
 		this.spawnFruits = spawnFruits;
 		paused = false;
+		score = 0;
 		onCreate();
 	}
 
@@ -56,7 +61,7 @@ public class BackgroundView extends View {
 			ExtraTools.placeRandomFruit(resizedBg);
 		}
 
-		pausePaint = new Paint();
+		paint = new Paint();
 		pause = BitmapFactory.decodeResource(getResources(), R.drawable.pause);
 
 		mapTextures();
@@ -102,7 +107,11 @@ public class BackgroundView extends View {
 
 	@Override
 	public void onDraw(Canvas canvas) {
-		canvas.drawBitmap(pause, 0, 0, pausePaint);
+		canvas.drawBitmap(pause, 0, 0, paint);
+		paint.setColor(Color.BLACK);
+		paint.setTextSize(40);
+		paint.setTextAlign(Align.RIGHT);
+		canvas.drawText("Score: " + score, screenSize.x-10, 50, paint);
 		if (orientation != getResources().getConfiguration().orientation) {
 			scaleMap();
 			mapTextures();
@@ -119,7 +128,7 @@ public class BackgroundView extends View {
 
 	public void onLose() {
 		BaseLevelActivity host = (BaseLevelActivity) getContext();
-		host.onGameOver();
+		host.onGameOver(score);
 	}
 
 	public void onPauseButtonPressed() {
@@ -139,6 +148,7 @@ public class BackgroundView extends View {
 			onLose();
 		else {
 			if (spawnFruits && snake.hasEatenFruit()) {
+				score++;
 				Point pos = ExtraTools.placeRandomFruit(resizedBg);
 				mapper.mapBlock(pos.x, pos.y, resizedBg);
 			}

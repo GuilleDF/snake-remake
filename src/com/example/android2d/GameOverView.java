@@ -36,7 +36,7 @@ public class GameOverView extends View {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent e){
-		MainActivity host = (MainActivity) getContext();
+		BaseLevelActivity host = (BaseLevelActivity) getContext();
 		host.restartGame();
 		return true;
 	}

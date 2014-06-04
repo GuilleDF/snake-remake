@@ -7,19 +7,25 @@ import android.view.View;
 import android.view.Window;
 
 public class MenuActivity extends Activity {
-	private Intent startGameIntent;
+	private Intent level1;
+	private Intent level2;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		startGameIntent = new Intent(this, MainActivity.class);
+		level1 = new Intent(this, Level1Activity.class);
+		level2 = new Intent(this, Level2Activity.class);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		setContentView(R.layout.menu_layout);
 	}
 	
-	public void onClickPlay(View view){
-		startActivity(startGameIntent);
+	public void onClickLevel1(View view){
+		startActivity(level1);
+	}
+	
+	public void onClickLevel2(View view){
+		startActivity(level2);
 	}
 
 }

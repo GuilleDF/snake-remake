@@ -7,5 +7,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="play">Play</string>
+    <string name="level1">Level 1</string>
+    <string name="level2">Level 2</string>
 
 </resources>

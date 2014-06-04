@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,14 +22,18 @@ public class BackgroundView extends View {
 	private GestureDetector gestureDetector;
 
 	private TextureMapper mapper;
+	private int levelResourceId;
+	private Point snakePosition;
+	private int numberOfBlocks;
+	private boolean spawnFruits;
 
-	public BackgroundView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		onCreate();
-	}
-
-	public BackgroundView(Context context) {
+	public BackgroundView(Context context, Point snakePosition,
+			int numberOfBlocks, boolean spawnFruits, int levelResourceId) {
 		super(context);
+		this.levelResourceId = levelResourceId;
+		this.snakePosition = snakePosition;
+		this.numberOfBlocks = numberOfBlocks;
+		this.spawnFruits = spawnFruits;
 		onCreate();
 	}
 
@@ -40,7 +43,7 @@ public class BackgroundView extends View {
 		options.inScaled = false;
 
 		background = BitmapFactory.decodeResource(getResources(),
-				R.drawable.bg_2020, options);
+				levelResourceId, options);
 		new Paint();
 
 		screenSize = ExtraTools.getScreenSize(getContext());
@@ -52,17 +55,18 @@ public class BackgroundView extends View {
 			resizedBg.scaleByHeight(screenSize.y);
 		}
 
-		snake = new Snake(5, 15);
+		snake = new Snake(snakePosition.x, snakePosition.y);
 		snake.setDirection(Direction.UP);
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < numberOfBlocks; i++) {
 			snake.addBlock();
 		}
 
 		gestureDetector = new GestureDetector(getContext(),
 				new GestureProcessor(snake));
-
-		ExtraTools.placeRandomFruit(resizedBg);
-		ExtraTools.placeRandomFruit(resizedBg);
+		if (spawnFruits) {
+			ExtraTools.placeRandomFruit(resizedBg);
+			ExtraTools.placeRandomFruit(resizedBg);
+		}
 
 		mapper = new TextureMapper(getResources());
 		mapper.loadTextures();
@@ -76,7 +80,7 @@ public class BackgroundView extends View {
 		if (snake.hasDied())
 			onLose();
 		else {
-			if (snake.hasEatenFruit()) {
+			if (spawnFruits && snake.hasEatenFruit()) {
 				Point pos = ExtraTools.placeRandomFruit(resizedBg);
 				mapper.mapBlock(pos.x, pos.y, resizedBg);
 			}
@@ -100,7 +104,7 @@ public class BackgroundView extends View {
 	}
 
 	public void onLose() {
-		MainActivity host = (MainActivity) getContext();
+		BaseLevelActivity host = (BaseLevelActivity) getContext();
 		host.onGameOver();
 	}
 

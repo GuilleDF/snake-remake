@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 
 public class MenuActivity extends Activity {
 	private Intent level1;
@@ -16,6 +17,8 @@ public class MenuActivity extends Activity {
 		level1 = new Intent(this, Level1Activity.class);
 		level2 = new Intent(this, Level2Activity.class);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
 		setContentView(R.layout.menu_layout);
 	}

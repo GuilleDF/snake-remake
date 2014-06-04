@@ -1083,21 +1083,22 @@ containing a value of this type.
         public static final int fruit=0x7f02005a;
         public static final int game_over=0x7f02005b;
         public static final int ic_launcher=0x7f02005c;
-        public static final int snake_bend_dl=0x7f02005d;
-        public static final int snake_bend_dr=0x7f02005e;
-        public static final int snake_bend_ul=0x7f02005f;
-        public static final int snake_bend_ur=0x7f020060;
-        public static final int snake_body_horizontal=0x7f020061;
-        public static final int snake_body_vertical=0x7f020062;
-        public static final int snake_head_down=0x7f020063;
-        public static final int snake_head_left=0x7f020064;
-        public static final int snake_head_right=0x7f020065;
-        public static final int snake_head_up=0x7f020066;
-        public static final int snake_tail_down=0x7f020067;
-        public static final int snake_tail_left=0x7f020068;
-        public static final int snake_tail_right=0x7f020069;
-        public static final int snake_tail_up=0x7f02006a;
-        public static final int wall_texture=0x7f02006b;
+        public static final int pause=0x7f02005d;
+        public static final int snake_bend_dl=0x7f02005e;
+        public static final int snake_bend_dr=0x7f02005f;
+        public static final int snake_bend_ul=0x7f020060;
+        public static final int snake_bend_ur=0x7f020061;
+        public static final int snake_body_horizontal=0x7f020062;
+        public static final int snake_body_vertical=0x7f020063;
+        public static final int snake_head_down=0x7f020064;
+        public static final int snake_head_left=0x7f020065;
+        public static final int snake_head_right=0x7f020066;
+        public static final int snake_head_up=0x7f020067;
+        public static final int snake_tail_down=0x7f020068;
+        public static final int snake_tail_left=0x7f020069;
+        public static final int snake_tail_right=0x7f02006a;
+        public static final int snake_tail_up=0x7f02006b;
+        public static final int wall_texture=0x7f02006c;
     }
     public static final class id {
         public static final int RelativeLayout1=0x7f05003c;

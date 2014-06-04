@@ -27,6 +27,12 @@ public class BackgroundView extends View {
 	private int numberOfBlocks;
 	private boolean spawnFruits;
 
+	private Bitmap pause;
+	private Paint pausePaint;
+	private boolean paused;
+
+	private int orientation;
+
 	public BackgroundView(Context context, Point snakePosition,
 			int numberOfBlocks, boolean spawnFruits, int levelResourceId) {
 		super(context);
@@ -34,68 +40,76 @@ public class BackgroundView extends View {
 		this.snakePosition = snakePosition;
 		this.numberOfBlocks = numberOfBlocks;
 		this.spawnFruits = spawnFruits;
+		paused = false;
 		onCreate();
 	}
 
 	private void onCreate() {
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inDither = false;
-		options.inScaled = false;
-
-		background = BitmapFactory.decodeResource(getResources(),
-				levelResourceId, options);
-		new Paint();
-
-		screenSize = ExtraTools.getScreenSize(getContext());
-
-		resizedBg = new ScaledBitmap(background);
-		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-			resizedBg.scaleByWidth(screenSize.x);
-		} else {
-			resizedBg.scaleByHeight(screenSize.y);
-		}
-
-		snake = new Snake(snakePosition.x, snakePosition.y);
-		snake.setDirection(Direction.UP);
-		for (int i = 0; i < numberOfBlocks; i++) {
-			snake.addBlock();
-		}
+		loadMap();
+		generateSnake();
 
 		gestureDetector = new GestureDetector(getContext(),
-				new GestureProcessor(snake));
+				new GestureProcessor(snake, this));
+
 		if (spawnFruits) {
 			ExtraTools.placeRandomFruit(resizedBg);
 			ExtraTools.placeRandomFruit(resizedBg);
 		}
 
+		pausePaint = new Paint();
+		pause = BitmapFactory.decodeResource(getResources(), R.drawable.pause);
+
+		mapTextures();
+	}
+
+	private void configureScreen() {
+		screenSize = ExtraTools.getScreenSize(getContext());
+		orientation = getResources().getConfiguration().orientation;
+	}
+
+	private void loadMap() {
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inDither = false;
+		options.inScaled = false;
+		background = BitmapFactory.decodeResource(getResources(),
+				levelResourceId, options);
+		resizedBg = new ScaledBitmap(background);
+		scaleMap();
+	}
+
+	private void scaleMap() {
+		configureScreen();
+		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+			resizedBg.scaleByWidth(screenSize.x);
+		} else {
+			resizedBg.scaleByHeight(screenSize.y);
+		}
+	}
+
+	private void generateSnake() {
+		snake = new Snake(snakePosition.x, snakePosition.y);
+		snake.setDirection(Direction.UP);
+		for (int i = 0; i < numberOfBlocks; i++) {
+			snake.addBlock();
+		}
+	}
+
+	private void mapTextures() {
 		mapper = new TextureMapper(getResources());
 		mapper.loadTextures();
 		mapper.mapBitmap(resizedBg);
-
 	}
 
 	@Override
 	public void onDraw(Canvas canvas) {
-		snake.moveOnBitmap(resizedBg);
-		if (snake.hasDied())
-			onLose();
-		else {
-			if (spawnFruits && snake.hasEatenFruit()) {
-				Point pos = ExtraTools.placeRandomFruit(resizedBg);
-				mapper.mapBlock(pos.x, pos.y, resizedBg);
-			}
-			snake.draw(resizedBg);
-			mapper.mapSnake(snake, resizedBg);
-			if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-				resizedBg.draw(canvas, 0,
-						(screenSize.y - resizedBg.getHeight()) / 2);
-			} else {
-				resizedBg.draw(canvas,
-						(screenSize.x - resizedBg.getWidth()) / 2, 0);
-			}
-			postInvalidateDelayed(200);
+		canvas.drawBitmap(pause, 0, 0, pausePaint);
+		if (orientation != getResources().getConfiguration().orientation) {
+			scaleMap();
+			mapTextures();
+			drawMap(canvas);
+		} else {
+			playGame(canvas);
 		}
-
 	}
 
 	@Override
@@ -106,6 +120,45 @@ public class BackgroundView extends View {
 	public void onLose() {
 		BaseLevelActivity host = (BaseLevelActivity) getContext();
 		host.onGameOver();
+	}
+
+	public void onPauseButtonPressed() {
+		paused = !paused;
+		if (!paused)
+			postInvalidateDelayed(200);
+
+	}
+
+	public boolean isPaused() {
+		return paused;
+	}
+
+	private void playGame(Canvas canvas) {
+		snake.moveOnBitmap(resizedBg);
+		if (snake.hasDied())
+			onLose();
+		else {
+			if (spawnFruits && snake.hasEatenFruit()) {
+				Point pos = ExtraTools.placeRandomFruit(resizedBg);
+				mapper.mapBlock(pos.x, pos.y, resizedBg);
+			}
+			snake.draw(resizedBg);
+			mapper.mapSnake(snake, resizedBg);
+			drawMap(canvas);
+		}
+		if (!paused)
+			postInvalidateDelayed(200);
+	}
+
+	private void drawMap(Canvas canvas) {
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			resizedBg.draw(canvas, 0,
+					(screenSize.y - resizedBg.getHeight()) / 2);
+		} else {
+			resizedBg
+					.draw(canvas, (screenSize.x - resizedBg.getWidth()) / 2, 0);
+
+		}
 	}
 
 }

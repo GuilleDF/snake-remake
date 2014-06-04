@@ -15,12 +15,12 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.example.android2d.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/title_activity_menu" >
             
         </activity>
         <activity
             android:name="com.example.android2d.MenuActivity"
-            android:label="@string/title_activity_menu" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

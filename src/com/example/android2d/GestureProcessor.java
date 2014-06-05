@@ -1,13 +1,14 @@
 package com.example.android2d;
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.GestureDetector.OnGestureListener;
 
 public class GestureProcessor implements OnGestureListener {
 	private Snake snake;
-	private BackgroundView view;
+	private StaticLevelView view;
 
-	public GestureProcessor(Snake snake, BackgroundView view) {
+	public GestureProcessor(Snake snake, StaticLevelView view) {
 		this.snake = snake;
 		this.view = view;
 	}
@@ -34,34 +35,38 @@ public class GestureProcessor implements OnGestureListener {
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
-		if(view.isPaused())
+		if (view.isPaused())
 			return true;
-		
-		int axis = -1; // -1 = no axis, 0 = x axis, 1 = y axis
+
+		Direction direction = snake.getDirection();
+		int currentAxis = -1; // -1 = no axis, 0 = x axis, 1 = y axis
+		if (direction.equals(Direction.RIGHT)
+				|| direction.equals(Direction.LEFT))
+			currentAxis = 0;
+		else
+			currentAxis = 1;
+
+		int futureAxis = -1; // -1 = no axis, 0 = x axis, 1 = y axis
 
 		if (Math.abs(distanceY) > Math.abs(distanceX)) {
 			// Y axis
-			axis = 1;
+			futureAxis = 1;
 		} else {
 			// X axis
-			axis = 0;
+			futureAxis = 0;
 		}
 
-		if (axis == 0) {
+		if (futureAxis == 0 && currentAxis == 1) {
 			if (distanceX < 0) {
-				if (!snake.getDirection().equals(Direction.LEFT))
-					snake.setDirection(Direction.RIGHT);
+				snake.setDirection(Direction.RIGHT);
 			} else {
-				if (!snake.getDirection().equals(Direction.RIGHT))
-					snake.setDirection(Direction.LEFT);
+				snake.setDirection(Direction.LEFT);
 			}
-		} else if (axis == 1) {
+		} else if (futureAxis == 1 && currentAxis == 0) {
 			if (distanceY < 0) {
-				if (!snake.getDirection().equals(Direction.UP))
-					snake.setDirection(Direction.DOWN);
+				snake.setDirection(Direction.DOWN);
 			} else {
-				if (!snake.getDirection().equals(Direction.DOWN))
-					snake.setDirection(Direction.UP);
+				snake.setDirection(Direction.UP);
 			}
 		}
 

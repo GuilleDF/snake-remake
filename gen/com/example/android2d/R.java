@@ -388,6 +388,10 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int itemPadding=0x7f010037;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int levelImage=0x7f010072;
         /**  Drawable used as a background for selected list items. 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -470,6 +474,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 </table>
          */
         public static final int navigationMode=0x7f010027;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int numberOfBlocks=0x7f010070;
         /**  Sets the padding, in pixels, of the end edge; see {@link android.R.attr#padding}. 
          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
 Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
@@ -656,6 +668,30 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 </table>
          */
         public static final int showDividers=0x7f010055;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int snakePositionX=0x7f01006e;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int snakePositionY=0x7f01006f;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int spawnFruits=0x7f010071;
         /**  Default Spinner style. 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -1079,26 +1115,27 @@ containing a value of this type.
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
         public static final int bg_2020=0x7f020057;
         public static final int bg_3030=0x7f020058;
-        public static final int floor_texture=0x7f020059;
-        public static final int fruit=0x7f02005a;
-        public static final int game_over=0x7f02005b;
-        public static final int ic_launcher=0x7f02005c;
-        public static final int pause=0x7f02005d;
-        public static final int snake_bend_dl=0x7f02005e;
-        public static final int snake_bend_dr=0x7f02005f;
-        public static final int snake_bend_ul=0x7f020060;
-        public static final int snake_bend_ur=0x7f020061;
-        public static final int snake_body_horizontal=0x7f020062;
-        public static final int snake_body_vertical=0x7f020063;
-        public static final int snake_head_down=0x7f020064;
-        public static final int snake_head_left=0x7f020065;
-        public static final int snake_head_right=0x7f020066;
-        public static final int snake_head_up=0x7f020067;
-        public static final int snake_tail_down=0x7f020068;
-        public static final int snake_tail_left=0x7f020069;
-        public static final int snake_tail_right=0x7f02006a;
-        public static final int snake_tail_up=0x7f02006b;
-        public static final int wall_texture=0x7f02006c;
+        public static final int bg_level3=0x7f020059;
+        public static final int floor_texture=0x7f02005a;
+        public static final int fruit=0x7f02005b;
+        public static final int game_over=0x7f02005c;
+        public static final int ic_launcher=0x7f02005d;
+        public static final int pause=0x7f02005e;
+        public static final int snake_bend_dl=0x7f02005f;
+        public static final int snake_bend_dr=0x7f020060;
+        public static final int snake_bend_ul=0x7f020061;
+        public static final int snake_bend_ur=0x7f020062;
+        public static final int snake_body_horizontal=0x7f020063;
+        public static final int snake_body_vertical=0x7f020064;
+        public static final int snake_head_down=0x7f020065;
+        public static final int snake_head_left=0x7f020066;
+        public static final int snake_head_right=0x7f020067;
+        public static final int snake_head_up=0x7f020068;
+        public static final int snake_tail_down=0x7f020069;
+        public static final int snake_tail_left=0x7f02006a;
+        public static final int snake_tail_right=0x7f02006b;
+        public static final int snake_tail_up=0x7f02006c;
+        public static final int wall_texture=0x7f02006d;
     }
     public static final class id {
         public static final int RelativeLayout1=0x7f05003c;
@@ -2960,6 +2997,94 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           @attr name com.example.android2d:spinnerMode
         */
         public static final int Spinner_spinnerMode = 7;
+        /** Attributes that can be used with a StaticLevelView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #StaticLevelView_levelImage com.example.android2d:levelImage}</code></td><td></td></tr>
+           <tr><td><code>{@link #StaticLevelView_numberOfBlocks com.example.android2d:numberOfBlocks}</code></td><td></td></tr>
+           <tr><td><code>{@link #StaticLevelView_snakePositionX com.example.android2d:snakePositionX}</code></td><td></td></tr>
+           <tr><td><code>{@link #StaticLevelView_snakePositionY com.example.android2d:snakePositionY}</code></td><td></td></tr>
+           <tr><td><code>{@link #StaticLevelView_spawnFruits com.example.android2d:spawnFruits}</code></td><td></td></tr>
+           </table>
+           @see #StaticLevelView_levelImage
+           @see #StaticLevelView_numberOfBlocks
+           @see #StaticLevelView_snakePositionX
+           @see #StaticLevelView_snakePositionY
+           @see #StaticLevelView_spawnFruits
+         */
+        public static final int[] StaticLevelView = {
+            0x7f01006e, 0x7f01006f, 0x7f010070, 0x7f010071,
+            0x7f010072
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.example.android2d.R.attr#levelImage}
+          attribute's value can be found in the {@link #StaticLevelView} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.example.android2d:levelImage
+        */
+        public static final int StaticLevelView_levelImage = 4;
+        /**
+          <p>This symbol is the offset where the {@link com.example.android2d.R.attr#numberOfBlocks}
+          attribute's value can be found in the {@link #StaticLevelView} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.android2d:numberOfBlocks
+        */
+        public static final int StaticLevelView_numberOfBlocks = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.example.android2d.R.attr#snakePositionX}
+          attribute's value can be found in the {@link #StaticLevelView} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.android2d:snakePositionX
+        */
+        public static final int StaticLevelView_snakePositionX = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.example.android2d.R.attr#snakePositionY}
+          attribute's value can be found in the {@link #StaticLevelView} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.android2d:snakePositionY
+        */
+        public static final int StaticLevelView_snakePositionY = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.example.android2d.R.attr#spawnFruits}
+          attribute's value can be found in the {@link #StaticLevelView} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.android2d:spawnFruits
+        */
+        public static final int StaticLevelView_spawnFruits = 3;
         /**  These are the standard attributes that make up a complete theme. 
            <p>Includes the following attributes:</p>
            <table>

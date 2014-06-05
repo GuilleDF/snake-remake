@@ -12,17 +12,18 @@ public class Snake {
 	private Point position;
 	/** Whether the snake has moved since the last change in direction */
 	private boolean hasMoved;
-	
+
 	private boolean hasDied;
 	private boolean hasEatenFruit;
 
 	public Snake(int x, int y) {
 		blocks = new ArrayList<SnakeBlock>();
 		position = new Point(x, y);
-		hasMoved = true; //This is so we can call setDirection() for the first time
+		hasMoved = true; // This is so we can call setDirection() for the first
+							// time
 		hasDied = false;
 		hasEatenFruit = false;
-		addBlock(); //So the snake has at least 1 block
+		addBlock(); // So the snake has at least 1 block
 	}
 
 	public Direction getDirection() {
@@ -51,6 +52,7 @@ public class Snake {
 		block.setTail(true);
 		blocks.add(block);
 	}
+
 	/**
 	 * Moves the snake in the current direction.<br>
 	 * Sets {@link #hasMoved hasMoved} to true
@@ -68,8 +70,10 @@ public class Snake {
 		hasMoved = true;
 		hasEatenFruit = false;
 	}
+
 	/**
 	 * Changes the current direction and sets {@link #hasMoved} to false.
+	 * 
 	 * @param direction
 	 */
 	public void setDirection(Direction direction) {
@@ -77,10 +81,9 @@ public class Snake {
 			this.direction = direction;
 		hasMoved = false;
 	}
-	
+
 	/**
-	 * Draws the snake onto the bitmap
-	 * (the colors, not the textures)
+	 * Draws the snake onto the bitmap (the colors, not the textures)
 	 * 
 	 * @param bitmap
 	 */
@@ -94,10 +97,10 @@ public class Snake {
 	public List<SnakeBlock> getBlocks() {
 		return blocks;
 	}
-	
+
 	/**
-	 * Sets each {@link SnakeBlock} to the appropriate color, 
-	 * depending on each block's type and position
+	 * Sets each {@link SnakeBlock} to the appropriate color, depending on each
+	 * block's type and position
 	 */
 	private void calculateColors() {
 		for (int i = 0; i < blocks.size(); i++) {
@@ -194,35 +197,36 @@ public class Snake {
 			}
 		}
 	}
+
 	/**
 	 * Does the same as {@link #move() move()}, but checks for collisions
+	 * 
 	 * @param bitmap
 	 */
-	public void moveOnBitmap(ScaledBitmap bitmap){
+	public void moveOnBitmap(ScaledBitmap bitmap) {
 		SnakeBlock inFront = new SnakeBlock(position.x, position.y);
 		inFront.move(direction);
 		Point pos = inFront.getCurrentPosition();
-		if(bitmap.getBlock(pos.x, pos.y) == TextureMap.FLOOR){
+		if (bitmap.getBlock(pos.x, pos.y) == TextureMap.FLOOR) {
 			move();
-		}
-		else{
+		} else {
 			onCrash(bitmap.getBlock(pos.x, pos.y));
 		}
 	}
-	
+
 	/**
 	 * Called when the snake tries to walk on a block other than
 	 * {@link TextureMap#FLOOR FLOOR}
-	 * @param block -- the block color it crashed into
+	 * 
+	 * @param block
+	 *            -- the block color it crashed into
 	 */
 	private void onCrash(int block) {
-		if(block == Color.BLACK){ //WALL (for now)
+		if (block == Color.BLACK) { // WALL (for now)
 			hasDied = true;
-		}
-		else if(Color.green(block) == 255){ // SNAKE
+		} else if (Color.green(block) == 255) { // SNAKE
 			hasDied = true;
-		}
-		else if(Color.blue(block) == 255){ //FRUIT (for now)
+		} else if (Color.blue(block) == 255) { // FRUIT (for now)
 			addBlock();
 			hasEatenFruit = true;
 		}
@@ -231,7 +235,7 @@ public class Snake {
 	public boolean hasDied() {
 		return hasDied;
 	}
-	
+
 	public boolean hasEatenFruit() {
 		return hasEatenFruit;
 	}

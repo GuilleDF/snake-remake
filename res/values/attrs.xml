@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="StaticLevelView">
+        <attr name="snakePositionX" format="integer" />
+        <attr name="snakePositionY" format="integer" />
+        <attr name="numberOfBlocks" format="integer" />
+        <attr name="spawnFruits" format="boolean" />
+        <attr name="levelImage" format="reference" />
+    </declare-styleable>
+
+</resources>

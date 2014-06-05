@@ -7,15 +7,15 @@ import android.view.Window;
 import android.view.WindowManager;
 
 /**
- * Extend this class and override {@link #onCreate(Bundle)} to set
- * {@link #levelView} to the desired level
+ * Extend this class and override {@link #setLevelView()} to return
+ * the desired level
  * 
  * @author gdefermin
  * 
  */
-public class BaseLevelActivity extends Activity {
+public abstract class BaseLevelActivity extends Activity {
 
-	protected BackgroundView levelView;
+	private StaticLevelView levelView;
 	private GameOverView gameOverView;
 
 	@Override
@@ -27,14 +27,15 @@ public class BaseLevelActivity extends Activity {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		// bgView = new BackgroundView(this, R.drawable.bg_2020);
-		// extend class and set bgView for each level
+		levelView = setLevelView();
 		gameOverView = new GameOverView(this);
 
 		setContentView(levelView);
 		levelView.requestFocus();
 
 	}
+
+	protected abstract StaticLevelView setLevelView();
 
 	public void onGameOver(int score) {
 		gameOverView.setScore(score);

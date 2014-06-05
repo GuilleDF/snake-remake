@@ -2,6 +2,7 @@ package com.example.android2d;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,11 +10,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Point;
+import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class BackgroundView extends View {
+public class StaticLevelView extends View {
 
 	private Bitmap background;
 	private Point screenSize;
@@ -34,22 +36,51 @@ public class BackgroundView extends View {
 	private boolean paused;
 
 	private int orientation;
-	
+
 	private int score;
 
-	public BackgroundView(Context context, Point snakePosition,
+	// XML parsing isn't working
+	public StaticLevelView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+
+		TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
+				R.styleable.StaticLevelView, 0, 0);
+
+		snakePosition = new Point(a.getInteger(
+				R.styleable.StaticLevelView_snakePositionX, 0), a.getInteger(
+				R.styleable.StaticLevelView_snakePositionY, 0));
+
+		numberOfBlocks = a.getInteger(
+				R.styleable.StaticLevelView_numberOfBlocks, 0);
+
+		spawnFruits = a.getBoolean(R.styleable.StaticLevelView_spawnFruits,
+				false);
+
+		levelResourceId = a.getResourceId(
+				R.styleable.StaticLevelView_levelImage, 0);
+
+		screenSize = new Point(a.getLayoutDimension(android.R.attr.layout_width, 0),
+				a.getLayoutDimension(android.R.attr.layout_height, 0));
+
+		a.recycle();
+
+		onCreate();
+	}
+
+	public StaticLevelView(Context context, Point snakePosition,
 			int numberOfBlocks, boolean spawnFruits, int levelResourceId) {
 		super(context);
 		this.levelResourceId = levelResourceId;
 		this.snakePosition = snakePosition;
 		this.numberOfBlocks = numberOfBlocks;
 		this.spawnFruits = spawnFruits;
-		paused = false;
-		score = 0;
+
 		onCreate();
 	}
 
 	private void onCreate() {
+		paused = false;
+		score = 0;
 		loadMap();
 		generateSnake();
 
@@ -68,7 +99,8 @@ public class BackgroundView extends View {
 	}
 
 	private void configureScreen() {
-		screenSize = ExtraTools.getScreenSize(getContext());
+		if (screenSize == null)
+			screenSize = ExtraTools.getScreenSize(getContext());
 		orientation = getResources().getConfiguration().orientation;
 	}
 
@@ -111,7 +143,7 @@ public class BackgroundView extends View {
 		paint.setColor(Color.BLACK);
 		paint.setTextSize(40);
 		paint.setTextAlign(Align.RIGHT);
-		canvas.drawText("Score: " + score, screenSize.x-10, 50, paint);
+		canvas.drawText("Score: " + score, screenSize.x - 10, 50, paint);
 		if (orientation != getResources().getConfiguration().orientation) {
 			scaleMap();
 			mapTextures();

@@ -33,6 +33,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/level2" >
         </activity>
+         <activity
+            android:name="com.example.android2d.Level3Activity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/level3" >
+        </activity>
     </application>
 
 </manifest>

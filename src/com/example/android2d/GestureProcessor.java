@@ -1,16 +1,15 @@
 package com.example.android2d;
 
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.GestureDetector.OnGestureListener;
+import android.view.MotionEvent;
 
 public class GestureProcessor implements OnGestureListener {
 	private Snake snake;
-	private StaticLevelView view;
+	private BaseLevelView view;
 
-	public GestureProcessor(Snake snake, StaticLevelView view) {
+	public GestureProcessor(Snake snake, BaseLevelView baseLevelView) {
 		this.snake = snake;
-		this.view = view;
+		this.view = baseLevelView;
 	}
 
 	@Override

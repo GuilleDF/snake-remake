@@ -122,5 +122,8 @@ public class ScaledBitmap {
 		originalBitmap.setPixel(x, y, color);
 	}
 	
+	public Bitmap getScaledBitmap(){
+		return scaledBitmap;
+	}
 
 }

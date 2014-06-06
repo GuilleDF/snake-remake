@@ -10,12 +10,14 @@ import android.view.WindowManager;
 public class MenuActivity extends Activity {
 	private Intent level1;
 	private Intent level2;
+	private Intent level3;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		level1 = new Intent(this, Level1Activity.class);
 		level2 = new Intent(this, Level2Activity.class);
+		level3 = new Intent(this, Level3Activity.class);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -29,6 +31,10 @@ public class MenuActivity extends Activity {
 	
 	public void onClickLevel2(View view){
 		startActivity(level2);
+	}
+	
+	public void onClickLevel3(View view){
+		startActivity(level3);
 	}
 
 }

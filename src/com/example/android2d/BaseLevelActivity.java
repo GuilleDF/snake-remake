@@ -1,7 +1,6 @@
 package com.example.android2d;
 
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -10,12 +9,12 @@ import android.view.WindowManager;
  * Extend this class and override {@link #setLevelView()} to return
  * the desired level
  * 
- * @author gdefermin
+ * @author GuilleDF
  * 
  */
 public abstract class BaseLevelActivity extends Activity {
 
-	private StaticLevelView levelView;
+	private BaseLevelView levelView;
 	private GameOverView gameOverView;
 
 	@Override
@@ -35,7 +34,7 @@ public abstract class BaseLevelActivity extends Activity {
 
 	}
 
-	protected abstract StaticLevelView setLevelView();
+	protected abstract BaseLevelView setLevelView();
 
 	public void onGameOver(int score) {
 		gameOverView.setScore(score);

@@ -3,7 +3,7 @@ package com.example.android2d;
 import android.graphics.Color;
 /**
  * Gives names to the colors that will represent each texture
- * @author gdefermin
+ * @author GuilleDF
  *
  */
 public class TextureMap {

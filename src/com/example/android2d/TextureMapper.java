@@ -84,10 +84,16 @@ public class TextureMapper {
 
 	public void mapSnake(Snake snake, ScaledBitmap bitmap) {
 		for (SnakeBlock block : snake.getBlocks()) {
+
+			// First we make sure the floor is mapped properly
 			mapBlock(block.getCurrentPosition().x,
 					block.getCurrentPosition().y, bitmap);
+
+			// Then we map the snake
 			mapBlock(block.getCurrentPosition().x,
 					block.getCurrentPosition().y, snake.scaledBitmap(), bitmap);
+
+			// We also make sure to remap the floor afer the snake has passed it
 			if (block.isTail() && block.getLastPosition() != null) {
 				mapBlock(block.getLastPosition().x, block.getLastPosition().y,
 						bitmap);
@@ -95,6 +101,14 @@ public class TextureMapper {
 		}
 	}
 
+	/**
+	 * Maps a block from <b>source</b> onto <b>target</b>
+	 * 
+	 * @param x
+	 * @param y
+	 * @param source
+	 * @param target
+	 */
 	public void mapBlock(int x, int y, ScaledBitmap source, ScaledBitmap target) {
 		int color = source.getBlock(x, y);
 		if (color == TextureMap.FLOOR)
@@ -133,6 +147,14 @@ public class TextureMapper {
 			target.drawBlock(x, y, fruit);
 	}
 
+	/**
+	 * Same as {@link #mapBlock(int, int, ScaledBitmap, ScaledBitmap)
+	 * mapBlock(x, y, bitmap, bitmap)}
+	 * 
+	 * @param x
+	 * @param y
+	 * @param bitmap
+	 */
 	public void mapBlock(int x, int y, ScaledBitmap bitmap) {
 		mapBlock(x, y, bitmap, bitmap);
 	}

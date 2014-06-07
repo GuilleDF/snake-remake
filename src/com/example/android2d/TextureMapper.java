@@ -85,6 +85,8 @@ public class TextureMapper {
 	public void mapSnake(Snake snake, ScaledBitmap bitmap) {
 		for (SnakeBlock block : snake.getBlocks()) {
 			mapBlock(block.getCurrentPosition().x,
+					block.getCurrentPosition().y, bitmap);
+			mapBlock(block.getCurrentPosition().x,
 					block.getCurrentPosition().y, snake.scaledBitmap(), bitmap);
 			if (block.isTail() && block.getLastPosition() != null) {
 				mapBlock(block.getLastPosition().x, block.getLastPosition().y,

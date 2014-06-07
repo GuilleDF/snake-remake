@@ -9,7 +9,7 @@ public class ScrollingLevelView extends BaseLevelView {
 	private Bitmap visibleBitmap;
 	private Point visibleBlocks;
 	private Point visibleAreaPosition;
-	private final int scrollDistance = 3;
+	private final int scrollDistance = 5;
 
 	public ScrollingLevelView(Context context, Point snakePosition,
 			int numberOfBlocks, boolean spawnFruits, int levelResourceId,
@@ -44,16 +44,16 @@ public class ScrollingLevelView extends BaseLevelView {
 		if (currentRelativePosition().x < scrollDistance
 				&& visibleAreaPosition.x > 0) {
 			scroll(Direction.LEFT);
-		} else if (currentRelativePosition().x > visibleAreaPosition.x
-				+ visibleBlocks.x - scrollDistance
-				&& visibleAreaPosition.x < resizedBg.numBlocksX()) {
+		} else if (currentRelativePosition().x > visibleBlocks.x
+				- scrollDistance
+				&& visibleAreaPosition.x + visibleBlocks.x < resizedBg.numBlocksX()) {
 			scroll(Direction.RIGHT);
 		} else if (currentRelativePosition().y < scrollDistance
 				&& visibleAreaPosition.y > 0) {
 			scroll(Direction.UP);
-		} else if (currentRelativePosition().y > visibleAreaPosition.y
-				+ visibleBlocks.y - scrollDistance
-				&& visibleAreaPosition.y < resizedBg.numBlocksY()) {
+		} else if (currentRelativePosition().y > visibleBlocks.y
+				- scrollDistance
+				&& visibleAreaPosition.y + visibleBlocks.y < resizedBg.numBlocksY()) {
 			scroll(Direction.DOWN);
 		} else {
 			setVisibleArea(visibleAreaPosition, visibleBlocks);
@@ -84,23 +84,19 @@ public class ScrollingLevelView extends BaseLevelView {
 		switch (direction) {
 		case UP:
 			setVisibleArea(new Point(visibleAreaPosition.x,
-					visibleAreaPosition.y - 1), new Point(visibleBlocks.x,
-					visibleBlocks.y - 1));
+					visibleAreaPosition.y - 1), visibleBlocks);
 			break;
 		case DOWN:
 			setVisibleArea(new Point(visibleAreaPosition.x,
-					visibleAreaPosition.y + 1), new Point(visibleBlocks.x,
-					visibleBlocks.y + 1));
+					visibleAreaPosition.y + 1), visibleBlocks);
 			break;
 		case LEFT:
 			setVisibleArea(new Point(visibleAreaPosition.x - 1,
-					visibleAreaPosition.y), new Point(visibleBlocks.x - 1,
-					visibleBlocks.y));
+					visibleAreaPosition.y), visibleBlocks);
 			break;
 		case RIGHT:
 			setVisibleArea(new Point(visibleAreaPosition.x + 1,
-					visibleAreaPosition.y), new Point(visibleBlocks.x + 1,
-					visibleBlocks.y));
+					visibleAreaPosition.y), visibleBlocks);
 		}
 	}
 

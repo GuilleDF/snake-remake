@@ -180,6 +180,7 @@ public abstract class BaseLevelView extends View{
 
 	private void playGame(Canvas canvas) {
 		snake.moveOnBitmap(resizedBg);
+		snakePosition = snake.getPosition();
 		if (snake.hasDied())
 			onLose();
 		else {
@@ -203,10 +204,10 @@ public abstract class BaseLevelView extends View{
 		Bitmap bitmapToDraw = visibleBitmap();
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 			canvas.drawBitmap(bitmapToDraw, 0,
-					(screenSize.y - resizedBg.getHeight()) / 2, paint);
+					(screenSize.y - bitmapToDraw.getHeight()) / 2, paint);
 		} else {
 			canvas
-					.drawBitmap(bitmapToDraw, (screenSize.x - resizedBg.getWidth()) / 2, 0, paint);
+					.drawBitmap(bitmapToDraw, (screenSize.x - bitmapToDraw.getWidth()) / 2, 0, paint);
 
 		}
 	}

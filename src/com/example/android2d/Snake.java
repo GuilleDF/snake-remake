@@ -240,4 +240,8 @@ public class Snake {
 		return hasEatenFruit;
 	}
 
+	public Point getPosition() {
+		return position;
+	}
+
 }

@@ -12,16 +12,17 @@ public class StaticLevelView extends BaseLevelView {
 		onCreate();
 	}
 
+	// The visible blocks don't change
 	@Override
 	protected int visibleBlocksY() {
 		return levelScaledBitmap.numBlocksY();
 	}
-
 	@Override
 	protected int visibleBlocksX() {
 		return levelScaledBitmap.numBlocksX();
 	}
 
+	// Static -- visible area doesn't need to update
 	@Override
 	protected void updateVisibleArea() {}
 

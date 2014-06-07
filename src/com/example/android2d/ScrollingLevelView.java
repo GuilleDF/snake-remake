@@ -39,6 +39,11 @@ public class ScrollingLevelView extends BaseLevelView {
 		return visibleBitmap;
 	}
 
+	/**
+	 * If the snake is at {@link #scrollDistance} from the edge and we haven't
+	 * reached {@link BaseLevelView#levelScaledBitmap levelScaledBitmap}'s
+	 * bounds, it scrolls the bitmap.
+	 */
 	@Override
 	protected void updateVisibleArea() {
 		if (currentRelativePosition().x < scrollDistance
@@ -46,21 +51,33 @@ public class ScrollingLevelView extends BaseLevelView {
 			scroll(Direction.LEFT);
 		} else if (currentRelativePosition().x > visibleBlocks.x
 				- scrollDistance
-				&& visibleAreaPosition.x + visibleBlocks.x < levelScaledBitmap.numBlocksX()) {
+				&& visibleAreaPosition.x + visibleBlocks.x < levelScaledBitmap
+						.numBlocksX()) {
 			scroll(Direction.RIGHT);
 		} else if (currentRelativePosition().y < scrollDistance
 				&& visibleAreaPosition.y > 0) {
 			scroll(Direction.UP);
 		} else if (currentRelativePosition().y > visibleBlocks.y
 				- scrollDistance
-				&& visibleAreaPosition.y + visibleBlocks.y < levelScaledBitmap.numBlocksY()) {
+				&& visibleAreaPosition.y + visibleBlocks.y < levelScaledBitmap
+						.numBlocksY()) {
 			scroll(Direction.DOWN);
 		} else {
 			setVisibleArea(visibleAreaPosition, visibleBlocks);
 		}
 	}
 
+	/**
+	 * Sets the visible area
+	 * 
+	 * @param origin
+	 *            Start of visible area
+	 * @param numBlocks
+	 *            Number of blocks in each axis
+	 */
 	private void setVisibleArea(Point origin, Point numBlocks) {
+
+		// First we convert 'blocks' into pixels
 		int originPixelsX = origin.x * levelScaledBitmap.getWidth()
 				/ levelScaledBitmap.numBlocksX();
 		int originPixelsY = origin.y * levelScaledBitmap.getHeight()
@@ -69,17 +86,34 @@ public class ScrollingLevelView extends BaseLevelView {
 				/ levelScaledBitmap.numBlocksX();
 		int numPixelsY = numBlocks.y * levelScaledBitmap.getHeight()
 				/ levelScaledBitmap.numBlocksY();
-		visibleBitmap = Bitmap.createBitmap(levelScaledBitmap.getScaledBitmap(),
-				originPixelsX, originPixelsY, numPixelsX, numPixelsY);
+
+		// Then we make the visible area bitmap
+		visibleBitmap = Bitmap.createBitmap(
+				levelScaledBitmap.getScaledBitmap(), originPixelsX,
+				originPixelsY, numPixelsX, numPixelsY);
+
+		// We update the position and blocks fields
 		visibleAreaPosition = new Point(origin);
 		visibleBlocks = new Point(numBlocks);
 	}
 
+	/**
+	 * The snake's position relative to the visible bitmap
+	 * 
+	 * @return position
+	 */
 	private Point currentRelativePosition() {
 		return new Point(currentPosition().x - visibleAreaPosition.x,
 				currentPosition().y - visibleAreaPosition.y);
 	}
 
+	/**
+	 * Advances the visible area by one block.<br>
+	 * Caller must ensure it doesn't go out of bounds.
+	 * 
+	 * @param direction
+	 *            The direction on which to advance
+	 */
 	private void scroll(Direction direction) {
 		switch (direction) {
 		case UP:

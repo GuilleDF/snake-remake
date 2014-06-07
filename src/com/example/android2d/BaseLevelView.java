@@ -18,9 +18,11 @@ import android.view.View;
 
 public abstract class BaseLevelView extends View {
 
-	private Point screenSize;
 	protected ScaledBitmap levelScaledBitmap;
 
+	//---------------------------------------//
+	
+	private Point screenSize;
 	private Snake snake;
 
 	private GestureDetector gestureDetector;
@@ -38,6 +40,7 @@ public abstract class BaseLevelView extends View {
 	private int orientation;
 
 	private int score;
+	private final long updateInterval = 200;
 
 	// XML parsing isn't working
 	public BaseLevelView(Context context, AttributeSet attrs) {
@@ -128,12 +131,12 @@ public abstract class BaseLevelView extends View {
 			int desiredWidth = screenSize.x * levelScaledBitmap.numBlocksX()
 					/ visibleBlocksX();
 			levelScaledBitmap.scaleByWidth(desiredWidth);
-			snake.scaledBitmap().scaleByWidth(desiredWidth);
+			snake.getScaledBitmap().scaleByWidth(desiredWidth);
 		} else {
 			int desiredHeight = screenSize.y * levelScaledBitmap.numBlocksY()
 					/ visibleBlocksY();
 			levelScaledBitmap.scaleByHeight(desiredHeight);
-			snake.scaledBitmap().scaleByHeight(desiredHeight);
+			snake.getScaledBitmap().scaleByHeight(desiredHeight);
 		}
 	}
 
@@ -183,7 +186,7 @@ public abstract class BaseLevelView extends View {
 	public void onPauseButtonPressed() {
 		paused = !paused;
 		if (!paused)
-			postInvalidateDelayed(200);
+			postInvalidateDelayed(updateInterval );
 
 	}
 
@@ -199,8 +202,11 @@ public abstract class BaseLevelView extends View {
 		else {
 			if (spawnFruits && snake.hasEatenFruit()) {
 				score++;
+
+				// To 'eat' the fruit, we map where the fruit was to white
 				levelScaledBitmap.drawToOriginal(snakePosition.x,
 						snakePosition.y, Color.WHITE);
+
 				Point pos = ExtraTools.placeRandomFruit(levelScaledBitmap);
 				mapper.mapBlock(pos.x, pos.y, levelScaledBitmap);
 			}

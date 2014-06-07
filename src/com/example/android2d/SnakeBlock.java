@@ -8,6 +8,7 @@ public class SnakeBlock {
 
 	/** Last position the block was at */
 	private Point lastPosition;
+	/** current position of the block */
 	private Point currentPosition;
 	private Paint paint;
 	private boolean isTail;
@@ -16,6 +17,12 @@ public class SnakeBlock {
 	
 	public SnakeBlock(int x, int y){
 		currentPosition = new Point(x, y);
+		paint = new Paint();
+		paint.setColor(color);
+	}
+	
+	public SnakeBlock(Point pos){
+		currentPosition = new Point(pos);
 		paint = new Paint();
 		paint.setColor(color);
 	}
@@ -60,6 +67,7 @@ public class SnakeBlock {
 	}
 	
 	public void draw(ScaledBitmap bitmap){
+		// Perhaps this isn't needed anymore...
 		if(isTail && lastPosition != null){
 			bitmap.drawToOriginal(lastPosition.x, lastPosition.y, Color.WHITE);
 

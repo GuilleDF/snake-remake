@@ -21,19 +21,27 @@ public abstract class BaseLevelActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// No status bar
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+		// No action bar
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		levelView = setLevelView();
 		gameOverView = new GameOverView(this);
 
+		// Focus levelView
 		setContentView(levelView);
 		levelView.requestFocus();
 
 	}
 
+	/**
+	 * Override this method to return the desired level view
+	 * 
+	 * @return levelView
+	 */
 	protected abstract BaseLevelView setLevelView();
 
 	public void onGameOver(int score) {
@@ -43,6 +51,7 @@ public abstract class BaseLevelActivity extends Activity {
 	}
 
 	public void restartGame() {
+		// Closes this activity, falling back to it's parent
 		finish();
 	}
 

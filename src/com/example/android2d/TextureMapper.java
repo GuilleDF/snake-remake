@@ -6,6 +6,16 @@ import android.graphics.BitmapFactory;
 
 import com.example.android2d.R;
 
+/**
+ * Assigns a {@link Bitmap} to a color (specified in {@link TextureMap}) <br>
+ * <br>
+ * To add a new texture, add the appropriate field, initialize it in
+ * {@link #loadTextures()} and assign it to a color in
+ * {@link #mapBlock(int, int, ScaledBitmap, ScaledBitmap) mapBlock()}
+ * 
+ * @author GuilleDF
+ * 
+ */
 public class TextureMapper {
 	private Resources resources;
 
@@ -74,6 +84,11 @@ public class TextureMapper {
 				R.drawable.snake_bend_ul);
 	}
 
+	/**
+	 * Maps a whole {@link ScaledBitmap}
+	 * 
+	 * @param bitmap The {@link ScaledBitmap} to map
+	 */
 	public void mapBitmap(ScaledBitmap bitmap) {
 		for (int i = 0; i < bitmap.numBlocksX(); i++) {
 			for (int j = 0; j < bitmap.numBlocksY(); j++) {
@@ -82,6 +97,12 @@ public class TextureMapper {
 		}
 	}
 
+	/**
+	 * Maps a <b>snake</b> onto a <b>bitmap</b>
+	 * 
+	 * @param snake
+	 * @param bitmap
+	 */
 	public void mapSnake(Snake snake, ScaledBitmap bitmap) {
 		for (SnakeBlock block : snake.getBlocks()) {
 
@@ -91,9 +112,9 @@ public class TextureMapper {
 
 			// Then we map the snake
 			mapBlock(block.getCurrentPosition().x,
-					block.getCurrentPosition().y, snake.scaledBitmap(), bitmap);
+					block.getCurrentPosition().y, snake.getScaledBitmap(), bitmap);
 
-			// We also make sure to remap the floor afer the snake has passed it
+			// We also make sure to remap the floor after the snake has passed it
 			if (block.isTail() && block.getLastPosition() != null) {
 				mapBlock(block.getLastPosition().x, block.getLastPosition().y,
 						bitmap);
@@ -105,9 +126,13 @@ public class TextureMapper {
 	 * Maps a block from <b>source</b> onto <b>target</b>
 	 * 
 	 * @param x
+	 *            The block's x coordinate
 	 * @param y
+	 *            The block's y coordinate
 	 * @param source
+	 *            The source {@link ScaledBitmap}
 	 * @param target
+	 *            The target {@link ScaledBitmap}
 	 */
 	public void mapBlock(int x, int y, ScaledBitmap source, ScaledBitmap target) {
 		int color = source.getBlock(x, y);

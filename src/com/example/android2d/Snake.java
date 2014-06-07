@@ -15,6 +15,10 @@ public class Snake {
 
 	private boolean hasDied;
 	private boolean hasEatenFruit;
+	/**
+	 * The scaled bitmap the snake will be drawn to. Set it with
+	 * {@link #setScaledBitmap(ScaledBitmap)}
+	 */
 	private ScaledBitmap scaledBitmap;
 
 	public Snake(int x, int y) {
@@ -56,7 +60,7 @@ public class Snake {
 
 	/**
 	 * Moves the snake in the current direction.<br>
-	 * Sets {@link #hasMoved hasMoved} to true
+	 * Sets {@link #hasMoved} to true
 	 */
 	private void move() {
 		for (int i = 0; i < blocks.size(); i++) {
@@ -85,8 +89,6 @@ public class Snake {
 
 	/**
 	 * Draws the snake onto the bitmap (the colors, not the textures)
-	 * 
-	 * @param bitmap
 	 */
 	public void draw() {
 		calculateColors();
@@ -200,9 +202,10 @@ public class Snake {
 	}
 
 	/**
-	 * Does the same as {@link #move() move()}, but checks for collisions
+	 * Does the same as {@link #move()}, but checks for collisions
 	 * 
 	 * @param bitmap
+	 *            The bitmap to use for collision checking
 	 */
 	public void moveOnBitmap(ScaledBitmap bitmap) {
 		SnakeBlock inFront = new SnakeBlock(position.x, position.y);
@@ -220,7 +223,7 @@ public class Snake {
 	 * {@link TextureMap#FLOOR FLOOR}
 	 * 
 	 * @param block
-	 *            -- the block color it crashed into
+	 *            The block color it crashed into
 	 */
 	private void onCrash(int block) {
 		if (block == Color.BLACK) { // WALL (for now)
@@ -245,11 +248,11 @@ public class Snake {
 		return position;
 	}
 
-	public ScaledBitmap scaledBitmap() {
+	public ScaledBitmap getScaledBitmap() {
 		return scaledBitmap;
 	}
 
-	public void setScaledBitmap(ScaledBitmap sb){
+	public void setScaledBitmap(ScaledBitmap sb) {
 		scaledBitmap = sb;
 	}
 }

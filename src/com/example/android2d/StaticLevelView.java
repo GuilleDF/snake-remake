@@ -14,12 +14,12 @@ public class StaticLevelView extends BaseLevelView {
 
 	@Override
 	protected int visibleBlocksY() {
-		return resizedBg.numBlocksY();
+		return levelScaledBitmap.numBlocksY();
 	}
 
 	@Override
 	protected int visibleBlocksX() {
-		return resizedBg.numBlocksX();
+		return levelScaledBitmap.numBlocksX();
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class StaticLevelView extends BaseLevelView {
 
 	@Override
 	protected Bitmap visibleBitmap() {
-		return resizedBg.getScaledBitmap();
+		return levelScaledBitmap.getScaledBitmap();
 	}
 
 }

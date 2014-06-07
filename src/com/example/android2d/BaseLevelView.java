@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,11 +16,10 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-public abstract class BaseLevelView extends View{
+public abstract class BaseLevelView extends View {
 
-	private Bitmap background;
 	private Point screenSize;
-	protected ScaledBitmap resizedBg;
+	protected ScaledBitmap levelScaledBitmap;
 
 	private Snake snake;
 
@@ -89,8 +89,8 @@ public abstract class BaseLevelView extends View{
 				new GestureProcessor(snake, this));
 
 		if (spawnFruits) {
-			ExtraTools.placeRandomFruit(resizedBg);
-			ExtraTools.placeRandomFruit(resizedBg);
+			ExtraTools.placeRandomFruit(levelScaledBitmap);
+			ExtraTools.placeRandomFruit(levelScaledBitmap);
 		}
 
 		paint = new Paint();
@@ -108,18 +108,32 @@ public abstract class BaseLevelView extends View{
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inDither = false;
 		options.inScaled = false;
-		background = BitmapFactory.decodeResource(getResources(),
+		Bitmap background = BitmapFactory.decodeResource(getResources(),
 				levelResourceId, options);
-		resizedBg = new ScaledBitmap(background);
+		levelScaledBitmap = new ScaledBitmap(background);
+
+		//Maybe not the best place for this line...
+		snake = new Snake(snakePosition.x, snakePosition.y);
+		
+		snake.setScaledBitmap(new ScaledBitmap(
+				Bitmap.createBitmap(background.getWidth(),
+						background.getHeight(), Config.ARGB_8888)));
+
 		scaleMap();
 	}
 
-	protected void scaleMap(){
+	protected void scaleMap() {
 		configureScreen();
 		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-			resizedBg.scaleByWidth(screenSize.x*resizedBg.numBlocksX()/visibleBlocksX());
+			int desiredWidth = screenSize.x * levelScaledBitmap.numBlocksX()
+					/ visibleBlocksX();
+			levelScaledBitmap.scaleByWidth(desiredWidth);
+			snake.scaledBitmap().scaleByWidth(desiredWidth);
 		} else {
-			resizedBg.scaleByHeight(screenSize.y*resizedBg.numBlocksY()/visibleBlocksY());
+			int desiredHeight = screenSize.y * levelScaledBitmap.numBlocksY()
+					/ visibleBlocksY();
+			levelScaledBitmap.scaleByHeight(desiredHeight);
+			snake.scaledBitmap().scaleByHeight(desiredHeight);
 		}
 	}
 
@@ -128,7 +142,6 @@ public abstract class BaseLevelView extends View{
 	protected abstract int visibleBlocksX();
 
 	private void generateSnake() {
-		snake = new Snake(snakePosition.x, snakePosition.y);
 		snake.setDirection(Direction.UP);
 		for (int i = 0; i < numberOfBlocks; i++) {
 			snake.addBlock();
@@ -138,7 +151,7 @@ public abstract class BaseLevelView extends View{
 	private void mapTextures() {
 		mapper = new TextureMapper(getResources());
 		mapper.loadTextures();
-		mapper.mapBitmap(resizedBg);
+		mapper.mapBitmap(levelScaledBitmap);
 	}
 
 	@Override
@@ -179,18 +192,18 @@ public abstract class BaseLevelView extends View{
 	}
 
 	private void playGame(Canvas canvas) {
-		snake.moveOnBitmap(resizedBg);
+		snake.moveOnBitmap(levelScaledBitmap);
 		snakePosition = snake.getPosition();
 		if (snake.hasDied())
 			onLose();
 		else {
 			if (spawnFruits && snake.hasEatenFruit()) {
 				score++;
-				Point pos = ExtraTools.placeRandomFruit(resizedBg);
-				mapper.mapBlock(pos.x, pos.y, resizedBg);
+				Point pos = ExtraTools.placeRandomFruit(levelScaledBitmap);
+				mapper.mapBlock(pos.x, pos.y, levelScaledBitmap);
 			}
-			snake.draw(resizedBg);
-			mapper.mapSnake(snake, resizedBg);
+			snake.draw();
+			mapper.mapSnake(snake, levelScaledBitmap);
 			drawMap(canvas);
 		}
 		if (!paused)
@@ -206,8 +219,8 @@ public abstract class BaseLevelView extends View{
 			canvas.drawBitmap(bitmapToDraw, 0,
 					(screenSize.y - bitmapToDraw.getHeight()) / 2, paint);
 		} else {
-			canvas
-					.drawBitmap(bitmapToDraw, (screenSize.x - bitmapToDraw.getWidth()) / 2, 0, paint);
+			canvas.drawBitmap(bitmapToDraw,
+					(screenSize.x - bitmapToDraw.getWidth()) / 2, 0, paint);
 
 		}
 	}
@@ -218,9 +231,9 @@ public abstract class BaseLevelView extends View{
 		setDrawingCacheEnabled(true);
 		return getDrawingCache();
 	}
-	
+
 	protected Point currentPosition() {
 		return snakePosition;
 	}
-	
+
 }

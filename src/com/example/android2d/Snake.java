@@ -15,6 +15,7 @@ public class Snake {
 
 	private boolean hasDied;
 	private boolean hasEatenFruit;
+	private ScaledBitmap scaledBitmap;
 
 	public Snake(int x, int y) {
 		blocks = new ArrayList<SnakeBlock>();
@@ -87,10 +88,10 @@ public class Snake {
 	 * 
 	 * @param bitmap
 	 */
-	public void draw(ScaledBitmap bitmap) {
+	public void draw() {
 		calculateColors();
 		for (SnakeBlock block : blocks) {
-			block.draw(bitmap);
+			block.draw(scaledBitmap);
 		}
 	}
 
@@ -244,4 +245,11 @@ public class Snake {
 		return position;
 	}
 
+	public ScaledBitmap scaledBitmap() {
+		return scaledBitmap;
+	}
+
+	public void setScaledBitmap(ScaledBitmap sb){
+		scaledBitmap = sb;
+	}
 }

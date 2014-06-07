@@ -73,60 +73,65 @@ public class TextureMapper {
 		snakeBendUL = BitmapFactory.decodeResource(resources,
 				R.drawable.snake_bend_ul);
 	}
-	
-	public void mapBitmap(ScaledBitmap bitmap){
-		for(int i=0; i<bitmap.numBlocksX(); i++){
-			for(int j=0; j<bitmap.numBlocksY(); j++){
+
+	public void mapBitmap(ScaledBitmap bitmap) {
+		for (int i = 0; i < bitmap.numBlocksX(); i++) {
+			for (int j = 0; j < bitmap.numBlocksY(); j++) {
 				mapBlock(i, j, bitmap);
 			}
 		}
 	}
-	
-	public void mapSnake(Snake snake, ScaledBitmap bitmap){
-		for(SnakeBlock block: snake.getBlocks()){
-			mapBlock(block.getCurrentPosition().x, block.getCurrentPosition().y, bitmap);
-			if(block.isTail() && block.getLastPosition() != null){
-				mapBlock(block.getLastPosition().x, block.getLastPosition().y, bitmap);
+
+	public void mapSnake(Snake snake, ScaledBitmap bitmap) {
+		for (SnakeBlock block : snake.getBlocks()) {
+			mapBlock(block.getCurrentPosition().x,
+					block.getCurrentPosition().y, snake.scaledBitmap(), bitmap);
+			if (block.isTail() && block.getLastPosition() != null) {
+				mapBlock(block.getLastPosition().x, block.getLastPosition().y,
+						bitmap);
 			}
 		}
 	}
-	
-	
-	public void mapBlock(int x, int y, ScaledBitmap bitmap){
-		int color = bitmap.getBlock(x, y);
-		if(color == TextureMap.FLOOR)
-			bitmap.drawBlock(x, y, floor);
-		else if(color == TextureMap.SNAKE_BEND_DL)
-			bitmap.drawBlock(x, y, snakeBendDL);
-		else if(color == TextureMap.SNAKE_BEND_DR)
-			bitmap.drawBlock(x, y, snakeBendDR);
-		else if(color == TextureMap.SNAKE_BEND_UL)
-			bitmap.drawBlock(x, y, snakeBendUL);
-		else if(color == TextureMap.SNAKE_BEND_UR)
-			bitmap.drawBlock(x, y, snakeBendUR);
-		else if(color == TextureMap.SNAKE_BODY_HORIZONTAL)
-			bitmap.drawBlock(x, y, snakeBodyHorizontal);
-		else if(color == TextureMap.SNAKE_BODY_VERTICAL)
-			bitmap.drawBlock(x, y, snakeBodyVertical);
-		else if(color == TextureMap.SNAKE_HEAD_DOWN)
-			bitmap.drawBlock(x, y, snakeHeadDown);
-		else if(color == TextureMap.SNAKE_HEAD_LEFT)
-			bitmap.drawBlock(x, y, snakeHeadLeft);
-		else if(color == TextureMap.SNAKE_HEAD_RIGHT)
-			bitmap.drawBlock(x, y, snakeHeadRight);
-		else if(color == TextureMap.SNAKE_HEAD_UP)
-			bitmap.drawBlock(x, y, snakeHeadUp);
-		else if(color == TextureMap.SNAKE_TAIL_DOWN)
-			bitmap.drawBlock(x, y, snakeTailDown);
-		else if(color == TextureMap.SNAKE_TAIL_LEFT)
-			bitmap.drawBlock(x, y, snakeTailLeft);
-		else if(color == TextureMap.SNAKE_TAIL_RIGHT)
-			bitmap.drawBlock(x, y, snakeTailRight);
-		else if(color == TextureMap.SNAKE_TAIL_UP)
-			bitmap.drawBlock(x, y, snakeTailUp);
-		else if(color == TextureMap.WALL)
-			bitmap.drawBlock(x, y, wall);
-		else if(color == TextureMap.FRUIT)
-			bitmap.drawBlock(x, y, fruit);
+
+	public void mapBlock(int x, int y, ScaledBitmap source, ScaledBitmap target) {
+		int color = source.getBlock(x, y);
+		if (color == TextureMap.FLOOR)
+			target.drawBlock(x, y, floor);
+		else if (color == TextureMap.SNAKE_BEND_DL)
+			target.drawBlock(x, y, snakeBendDL);
+		else if (color == TextureMap.SNAKE_BEND_DR)
+			target.drawBlock(x, y, snakeBendDR);
+		else if (color == TextureMap.SNAKE_BEND_UL)
+			target.drawBlock(x, y, snakeBendUL);
+		else if (color == TextureMap.SNAKE_BEND_UR)
+			target.drawBlock(x, y, snakeBendUR);
+		else if (color == TextureMap.SNAKE_BODY_HORIZONTAL)
+			target.drawBlock(x, y, snakeBodyHorizontal);
+		else if (color == TextureMap.SNAKE_BODY_VERTICAL)
+			target.drawBlock(x, y, snakeBodyVertical);
+		else if (color == TextureMap.SNAKE_HEAD_DOWN)
+			target.drawBlock(x, y, snakeHeadDown);
+		else if (color == TextureMap.SNAKE_HEAD_LEFT)
+			target.drawBlock(x, y, snakeHeadLeft);
+		else if (color == TextureMap.SNAKE_HEAD_RIGHT)
+			target.drawBlock(x, y, snakeHeadRight);
+		else if (color == TextureMap.SNAKE_HEAD_UP)
+			target.drawBlock(x, y, snakeHeadUp);
+		else if (color == TextureMap.SNAKE_TAIL_DOWN)
+			target.drawBlock(x, y, snakeTailDown);
+		else if (color == TextureMap.SNAKE_TAIL_LEFT)
+			target.drawBlock(x, y, snakeTailLeft);
+		else if (color == TextureMap.SNAKE_TAIL_RIGHT)
+			target.drawBlock(x, y, snakeTailRight);
+		else if (color == TextureMap.SNAKE_TAIL_UP)
+			target.drawBlock(x, y, snakeTailUp);
+		else if (color == TextureMap.WALL)
+			target.drawBlock(x, y, wall);
+		else if (color == TextureMap.FRUIT)
+			target.drawBlock(x, y, fruit);
+	}
+
+	public void mapBlock(int x, int y, ScaledBitmap bitmap) {
+		mapBlock(x, y, bitmap, bitmap);
 	}
 }

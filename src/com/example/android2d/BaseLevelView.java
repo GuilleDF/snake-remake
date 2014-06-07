@@ -112,9 +112,9 @@ public abstract class BaseLevelView extends View {
 				levelResourceId, options);
 		levelScaledBitmap = new ScaledBitmap(background);
 
-		//Maybe not the best place for this line...
+		// Maybe not the best place for this line...
 		snake = new Snake(snakePosition.x, snakePosition.y);
-		
+
 		snake.setScaledBitmap(new ScaledBitmap(
 				Bitmap.createBitmap(background.getWidth(),
 						background.getHeight(), Config.ARGB_8888)));
@@ -199,6 +199,8 @@ public abstract class BaseLevelView extends View {
 		else {
 			if (spawnFruits && snake.hasEatenFruit()) {
 				score++;
+				levelScaledBitmap.drawToOriginal(snakePosition.x,
+						snakePosition.y, Color.WHITE);
 				Point pos = ExtraTools.placeRandomFruit(levelScaledBitmap);
 				mapper.mapBlock(pos.x, pos.y, levelScaledBitmap);
 			}

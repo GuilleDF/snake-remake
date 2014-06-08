@@ -211,7 +211,8 @@ public class Snake {
 		SnakeBlock inFront = new SnakeBlock(position.x, position.y);
 		inFront.move(direction);
 		Point pos = inFront.getCurrentPosition();
-		if (bitmap.getBlock(pos.x, pos.y) == TextureMap.FLOOR) {
+		if (bitmap.getBlock(pos.x, pos.y) == TextureMap.FLOOR
+				&& getScaledBitmap().getBlock(pos.x, pos.y) == TextureMap.FLOOR) {
 			move();
 		} else {
 			onCrash(bitmap.getBlock(pos.x, pos.y));
@@ -253,6 +254,7 @@ public class Snake {
 	}
 
 	public void setScaledBitmap(ScaledBitmap sb) {
+		sb.getOriginalBitmap().eraseColor(TextureMap.FLOOR);
 		scaledBitmap = sb;
 	}
 }

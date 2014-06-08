@@ -126,4 +126,8 @@ public class ScaledBitmap {
 		return scaledBitmap;
 	}
 
+	public Bitmap getOriginalBitmap() {
+		return originalBitmap;
+	}
+
 }

@@ -67,9 +67,8 @@ public class SnakeBlock {
 	}
 	
 	public void draw(ScaledBitmap bitmap){
-		// Perhaps this isn't needed anymore...
 		if(isTail && lastPosition != null){
-			bitmap.drawToOriginal(lastPosition.x, lastPosition.y, Color.WHITE);
+			bitmap.drawToOriginal(lastPosition.x, lastPosition.y, TextureMap.FLOOR);
 
 		}
 		bitmap.drawToOriginal(currentPosition.x, currentPosition.y, color);

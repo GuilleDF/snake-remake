@@ -1,4 +1,10 @@
-package com.example.android2d;
+package com.snakeremake.main;
+
+import com.example.android2d.R;
+import com.example.android2d.R.layout;
+import com.snakeremake.activity.Level1Activity;
+import com.snakeremake.activity.Level2Activity;
+import com.snakeremake.activity.Level3Activity;
 
 import android.app.Activity;
 import android.content.Intent;

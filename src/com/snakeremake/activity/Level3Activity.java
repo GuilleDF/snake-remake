@@ -1,4 +1,9 @@
-package com.example.android2d;
+package com.snakeremake.activity;
+
+import com.example.android2d.R;
+import com.example.android2d.R.drawable;
+import com.snakeremake.views.BaseLevelView;
+import com.snakeremake.views.ScrollingLevelView;
 
 import android.graphics.Point;
 

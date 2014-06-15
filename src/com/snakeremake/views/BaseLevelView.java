@@ -1,4 +1,15 @@
-package com.example.android2d;
+package com.snakeremake.views;
+
+import com.example.android2d.R;
+import com.example.android2d.R.drawable;
+import com.example.android2d.R.styleable;
+import com.snakeremake.activity.BaseLevelActivity;
+import com.snakeremake.core.snake.Snake;
+import com.snakeremake.render.ScaledBitmap;
+import com.snakeremake.render.TextureMapper;
+import com.snakeremake.utils.Direction;
+import com.snakeremake.utils.ExtraTools;
+import com.snakeremake.utils.GestureProcessor;
 
 import android.content.Context;
 import android.content.res.Configuration;

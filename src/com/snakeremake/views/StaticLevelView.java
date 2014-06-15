@@ -1,4 +1,4 @@
-package com.example.android2d;
+package com.snakeremake.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -1,10 +1,13 @@
-package com.example.android2d;
+package com.snakeremake.render;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.example.android2d.R;
+import com.example.android2d.R.drawable;
+import com.snakeremake.core.snake.Snake;
+import com.snakeremake.core.snake.SnakeBlock;
 
 /**
  * Assigns a {@link Bitmap} to a color (specified in {@link TextureMap}) <br>

@@ -1,4 +1,8 @@
-package com.example.android2d;
+package com.snakeremake.core.snake;
+
+import com.snakeremake.render.ScaledBitmap;
+import com.snakeremake.render.TextureMap;
+import com.snakeremake.utils.Direction;
 
 import android.graphics.Color;
 import android.graphics.Paint;

@@ -1,4 +1,7 @@
-package com.example.android2d;
+package com.snakeremake.utils;
+
+import com.snakeremake.core.snake.Snake;
+import com.snakeremake.views.BaseLevelView;
 
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;

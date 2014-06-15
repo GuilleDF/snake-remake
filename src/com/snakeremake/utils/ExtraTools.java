@@ -1,6 +1,10 @@
-package com.example.android2d;
+package com.snakeremake.utils;
 
 import java.util.Random;
+
+import com.snakeremake.core.snake.Fruit;
+import com.snakeremake.render.ScaledBitmap;
+import com.snakeremake.render.TextureMap;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

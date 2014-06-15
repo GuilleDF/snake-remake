@@ -1,5 +1,10 @@
-package com.example.android2d;
+package com.snakeremake.views;
 
+
+import com.example.android2d.R;
+import com.example.android2d.R.string;
+import com.snakeremake.activity.BaseLevelActivity;
+import com.snakeremake.utils.ExtraTools;
 
 import android.content.Context;
 import android.graphics.Canvas;

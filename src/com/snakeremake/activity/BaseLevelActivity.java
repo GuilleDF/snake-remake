@@ -1,4 +1,7 @@
-package com.example.android2d;
+package com.snakeremake.activity;
+
+import com.snakeremake.views.BaseLevelView;
+import com.snakeremake.views.GameOverView;
 
 import android.app.Activity;
 import android.os.Bundle;

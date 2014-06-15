@@ -1,4 +1,4 @@
-package com.example.android2d;
+package com.snakeremake.render;
 
 import android.graphics.Color;
 /**

@@ -1,4 +1,4 @@
-package com.example.android2d;
+package com.snakeremake.utils;
 
 public enum Direction {
 LEFT,UP,RIGHT,DOWN

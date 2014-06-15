@@ -1,4 +1,7 @@
-package com.example.android2d;
+package com.snakeremake.core.snake;
+
+import com.snakeremake.render.ScaledBitmap;
+import com.snakeremake.render.TextureMap;
 
 import android.graphics.Point;
 

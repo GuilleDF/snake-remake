@@ -1,15 +1,16 @@
 package com.snakeremake.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.snakeremake.R;
+import com.snakeremake.main.Game;
 import com.snakeremake.main.Level;
 
 public class MenuActivity extends Activity {
@@ -28,7 +29,18 @@ public class MenuActivity extends Activity {
 		
 		ListView listView1 = (ListView) findViewById(R.id.listView1);
 		listView1.setAdapter(adapter);
+		
+		listView1.setOnItemClickListener(mMessageClickedHandler); 
 	}
+	
+	
+	private OnItemClickListener mMessageClickedHandler = new OnItemClickListener() {
+	    public void onItemClick(AdapterView parent, View v, int position, long id) {
+	    	new Game(ma, Level.levels.get(position));
+	    }
+	};
+	
+	private MenuActivity ma = this;
 	
 	
 	private String[] getLevelNames(){

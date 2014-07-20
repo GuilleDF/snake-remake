@@ -1,11 +1,6 @@
 package com.snakeremake.views;
 
 
-import com.example.android2d.R;
-import com.example.android2d.R.string;
-import com.snakeremake.activity.BaseLevelActivity;
-import com.snakeremake.utils.ExtraTools;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,6 +10,10 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.snakeremake.R;
+import com.snakeremake.activity.BaseLevelActivity;
+import com.snakeremake.utils.ExtraTools;
 
 public class GameOverView extends View {
 	private Point screenSize;

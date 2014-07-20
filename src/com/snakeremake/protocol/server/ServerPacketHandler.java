@@ -4,7 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 public class ServerPacketHandler extends SimpleChannelInboundHandler<String> {
-
+	
 	@Override
 	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
 		System.out.println(ctx.channel().localAddress()+" has connected!");

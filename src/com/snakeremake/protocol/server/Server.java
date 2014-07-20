@@ -11,11 +11,9 @@ public class Server {
 	public static Server inst(){
 		return inst;
 	}
-	
 	public static void setUpServer(String adress,int port){
 		inst = new Server(adress,port);
 	}
-	
 	private ServerBootstrap server;
 	
 	public Server(String adress, int port) {
@@ -25,7 +23,7 @@ public class Server {
         try {
             server = new ServerBootstrap().group(boss, worker)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new ServerChannelInitializer());
+                    .childHandler(new ServerChannelInitializer());            
             server.bind(port).sync().channel().closeFuture().sync();
         } catch (Exception ex) {
         } finally {

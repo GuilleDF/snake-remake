@@ -4,8 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.example.android2d.R;
-import com.example.android2d.R.drawable;
+import com.snakeremake.R;
 import com.snakeremake.core.snake.Snake;
 import com.snakeremake.core.snake.SnakeBlock;
 

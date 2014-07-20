@@ -1,43 +1,48 @@
 package com.snakeremake.activity;
 
-import com.example.android2d.R;
-import com.example.android2d.R.layout;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.snakeremake.R;
+import com.snakeremake.main.Level;
 
 public class MenuActivity extends Activity {
-	private Intent level1;
-	private Intent level2;
-	private Intent level3;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		level1 = new Intent(this, Level1Activity.class);
-		level2 = new Intent(this, Level2Activity.class);
-		level3 = new Intent(this, Level3Activity.class);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
+		//We start the splash activity, which will close itself when it's done
+		startActivity(new Intent(this, SplashActivity.class));
+		
 		setContentView(R.layout.menu_layout);
+				
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getLevelNames());
+		
+		ListView listView1 = (ListView) findViewById(R.id.listView1);
+		listView1.setAdapter(adapter);
 	}
 	
-	public void onClickLevel1(View view){
-		startActivity(level1);
+	
+	private String[] getLevelNames(){
+		String[] levelNames = new String[Level.levels.size()];
+		int index = 0;
+		for(Level level: Level.levels){
+			levelNames[index] = new String(level.getName());
+			index++;
+			Log.i("Snake-Remake", level.getName());
+		}
+		return levelNames;
 	}
 	
-	public void onClickLevel2(View view){
-		startActivity(level2);
-	}
-	
-	public void onClickLevel3(View view){
-		startActivity(level3);
-	}
 
 }

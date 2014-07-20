@@ -6,7 +6,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class Client {
-
+	//Y esto es el cliente, bastante igual que el servidor solo que este no se queda
+	//congelado al conectarse por lo que uso un simple metodo keepAlive() que ahora veras
 	public static Client inst = null;
 	public static Client inst(){
 		return inst;

@@ -1,16 +1,5 @@
 package com.snakeremake.views;
 
-import com.example.android2d.R;
-import com.example.android2d.R.drawable;
-import com.example.android2d.R.styleable;
-import com.snakeremake.activity.BaseLevelActivity;
-import com.snakeremake.core.snake.Snake;
-import com.snakeremake.render.ScaledBitmap;
-import com.snakeremake.render.TextureMapper;
-import com.snakeremake.utils.Direction;
-import com.snakeremake.utils.ExtraTools;
-import com.snakeremake.utils.GestureProcessor;
-
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -20,12 +9,21 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Paint.Align;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.snakeremake.R;
+import com.snakeremake.activity.BaseLevelActivity;
+import com.snakeremake.core.snake.Snake;
+import com.snakeremake.render.ScaledBitmap;
+import com.snakeremake.render.TextureMapper;
+import com.snakeremake.utils.Direction;
+import com.snakeremake.utils.ExtraTools;
+import com.snakeremake.utils.GestureProcessor;
 
 public abstract class BaseLevelView extends View {
 
@@ -53,6 +51,7 @@ public abstract class BaseLevelView extends View {
 	private int score;
 	private final long updateInterval = 200;
 
+	
 	// XML parsing isn't working
 	public BaseLevelView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -228,7 +227,7 @@ public abstract class BaseLevelView extends View {
 		if (!paused)
 			postInvalidateDelayed(200);
 	}
-
+	//
 	protected abstract void updateVisibleArea();
 
 	private void drawMap(Canvas canvas) {

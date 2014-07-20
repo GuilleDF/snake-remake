@@ -15,9 +15,7 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
     
         ChannelPipeline pipeline = ch.pipeline();
         
-        // pipeline.addLast("framer",
-        // new DelimiterBasedFrameDecoder((int) Math.pow(2, 15),
-        // Delimiters.lineDelimiter()));
+      
         pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192,
                 Delimiters.lineDelimiter()));
         pipeline.addLast("decoder", new StringDecoder());

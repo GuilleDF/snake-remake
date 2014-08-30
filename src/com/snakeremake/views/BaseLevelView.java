@@ -164,6 +164,7 @@ public abstract class BaseLevelView extends View {
 	}
 
 	public void onLose() {
+		clock.stopClock();
 		BaseLevelActivity host = (BaseLevelActivity) getContext();
 		host.onGameOver(score);
 	}

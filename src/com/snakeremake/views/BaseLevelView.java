@@ -161,7 +161,7 @@ public abstract class BaseLevelView extends View {
 		return gestureDetector.onTouchEvent(e);
 	}
 
-	public void onLose() {
+	public void onLose() {;
 		BaseLevelActivity host = (BaseLevelActivity) getContext();
 		host.onGameOver(score);
 	}

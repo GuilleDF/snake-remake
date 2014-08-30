@@ -2,7 +2,6 @@ package com.snakeremake.views;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -11,7 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Point;
-import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.view.View;
 import com.snakeremake.R;
 import com.snakeremake.activity.BaseLevelActivity;
 import com.snakeremake.core.snake.Snake;
+import com.snakeremake.main.Clock;
 import com.snakeremake.render.ScaledBitmap;
 import com.snakeremake.render.TextureMapper;
 import com.snakeremake.utils.Direction;
@@ -29,8 +29,8 @@ public abstract class BaseLevelView extends View {
 
 	protected ScaledBitmap levelScaledBitmap;
 
-	//---------------------------------------//
-	
+	// ---------------------------------------//
+
 	private Point screenSize;
 	private Snake snake;
 
@@ -49,37 +49,7 @@ public abstract class BaseLevelView extends View {
 	private int orientation;
 
 	private int score;
-	private final long updateInterval = 200;
-
-	
-	// XML parsing isn't working
-	public BaseLevelView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-
-		TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
-				R.styleable.StaticLevelView, 0, 0);
-
-		snakePosition = new Point(a.getInteger(
-				R.styleable.StaticLevelView_snakePositionX, 0), a.getInteger(
-				R.styleable.StaticLevelView_snakePositionY, 0));
-
-		numberOfBlocks = a.getInteger(
-				R.styleable.StaticLevelView_numberOfBlocks, 0);
-
-		spawnFruits = a.getBoolean(R.styleable.StaticLevelView_spawnFruits,
-				false);
-
-		levelResourceId = a.getResourceId(
-				R.styleable.StaticLevelView_levelImage, 0);
-
-		screenSize = new Point(a.getLayoutDimension(
-				android.R.attr.layout_width, 0), a.getLayoutDimension(
-				android.R.attr.layout_height, 0));
-
-		a.recycle();
-
-		onCreate();
-	}
+	private Clock clock;
 
 	public BaseLevelView(Context context, Point snakePosition,
 			int numberOfBlocks, boolean spawnFruits, int levelResourceId) {
@@ -110,6 +80,9 @@ public abstract class BaseLevelView extends View {
 		pause = BitmapFactory.decodeResource(getResources(), R.drawable.pause);
 
 		mapTextures();
+
+		clock = new Clock(this, 5);
+		clock.start();
 	}
 
 	protected void configureScreen() {
@@ -174,13 +147,13 @@ public abstract class BaseLevelView extends View {
 		paint.setTextSize(40);
 		paint.setTextAlign(Align.RIGHT);
 		canvas.drawText("Score: " + score, screenSize.x - 10, 50, paint);
+		// Rescale map on orientation changes
 		if (orientation != getResources().getConfiguration().orientation) {
 			scaleMap();
 			mapTextures();
-			drawMap(canvas);
-		} else {
-			playGame(canvas);
 		}
+		drawMap(canvas);
+		invalidate();
 	}
 
 	@Override
@@ -195,8 +168,16 @@ public abstract class BaseLevelView extends View {
 
 	public void onPauseButtonPressed() {
 		paused = !paused;
-		if (!paused)
-			postInvalidateDelayed(updateInterval );
+		if (paused){
+			try {
+				clock.wait();
+			} catch (InterruptedException e) {
+				Log.e("Snake-Remake", e.getMessage());
+			}
+		}
+		else {
+			clock.notify();
+		}
 
 	}
 
@@ -204,30 +185,6 @@ public abstract class BaseLevelView extends View {
 		return paused;
 	}
 
-	private void playGame(Canvas canvas) {
-		snake.moveOnBitmap(levelScaledBitmap);
-		snakePosition = snake.getPosition();
-		if (snake.hasDied())
-			onLose();
-		else {
-			if (spawnFruits && snake.hasEatenFruit()) {
-				score++;
-
-				// To 'eat' the fruit, we map where the fruit was to white
-				levelScaledBitmap.drawToOriginal(snakePosition.x,
-						snakePosition.y, Color.WHITE);
-
-				Point pos = ExtraTools.placeRandomFruit(levelScaledBitmap);
-				mapper.mapBlock(pos.x, pos.y, levelScaledBitmap);
-			}
-			snake.draw();
-			mapper.mapSnake(snake, levelScaledBitmap);
-			drawMap(canvas);
-		}
-		if (!paused)
-			postInvalidateDelayed(200);
-	}
-	//
 	protected abstract void updateVisibleArea();
 
 	private void drawMap(Canvas canvas) {
@@ -252,6 +209,27 @@ public abstract class BaseLevelView extends View {
 
 	protected Point currentPosition() {
 		return snakePosition;
+	}
+
+	public void onTick() {
+		snake.moveOnBitmap(levelScaledBitmap);
+		snakePosition = snake.getPosition();
+		if (snake.hasDied())
+			onLose();
+		else {
+			if (spawnFruits && snake.hasEatenFruit()) {
+				score++;
+
+				// To 'eat' the fruit, we map where the fruit was to white
+				levelScaledBitmap.drawToOriginal(snakePosition.x,
+						snakePosition.y, Color.WHITE);
+
+				Point pos = ExtraTools.placeRandomFruit(levelScaledBitmap);
+				mapper.mapBlock(pos.x, pos.y, levelScaledBitmap);
+			}
+			snake.draw();
+			mapper.mapSnake(snake, levelScaledBitmap);
+		}
 	}
 
 }

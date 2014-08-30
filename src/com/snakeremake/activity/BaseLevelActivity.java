@@ -43,13 +43,8 @@ public class BaseLevelActivity extends Activity {
 
 	}
 
-	/**
-	 * Override this method to return the desired level view
-	 * 
-	 * @return levelView
-	 */
 	protected BaseLevelView setLevelView(){
-		return Game.inst.getLevel().getView(this);
+		return Game.getLevel().getView(this);
 	}
 
 	public void onGameOver(int score) {

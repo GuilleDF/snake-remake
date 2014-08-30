@@ -35,7 +35,7 @@ public class MenuActivity extends Activity {
 	
 	
 	private OnItemClickListener mMessageClickedHandler = new OnItemClickListener() {
-	    public void onItemClick(AdapterView parent, View v, int position, long id) {
+	    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 	    	new Game(ma, Level.levels.get(position));
 	    }
 	};
@@ -49,7 +49,6 @@ public class MenuActivity extends Activity {
 		for(Level level: Level.levels){
 			levelNames[index] = new String(level.getName());
 			index++;
-			Log.i("Snake-Remake", level.getName());
 		}
 		return levelNames;
 	}

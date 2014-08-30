@@ -50,6 +50,8 @@ public abstract class BaseLevelView extends View {
 	private int score;
 	private Clock clock;
 
+	private boolean invalidateRequested;
+
 	public BaseLevelView(Context context, Point snakePosition,
 			int numberOfBlocks, boolean spawnFruits, int levelResourceId) {
 		super(context);
@@ -155,6 +157,10 @@ public abstract class BaseLevelView extends View {
 			onLose();
 
 		drawMap(canvas);
+		
+		//Pause this method until it receives an invalidate request
+//		while(!invalidateRequested){}
+//		invalidateRequested = false;
 		invalidate();
 	}
 
@@ -227,7 +233,11 @@ public abstract class BaseLevelView extends View {
 		}
 		snake.draw();
 		mapper.mapSnake(snake, levelScaledBitmap);
-
+//		requestInvalidate();
 	}
+
+//	private void requestInvalidate() {
+//		invalidateRequested = true;
+//	}
 
 }

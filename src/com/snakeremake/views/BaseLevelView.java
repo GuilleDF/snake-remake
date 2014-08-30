@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -152,6 +151,9 @@ public abstract class BaseLevelView extends View {
 			scaleMap();
 			mapTextures();
 		}
+		if (snake.hasDied())
+			onLose();
+
 		drawMap(canvas);
 		invalidate();
 	}
@@ -161,22 +163,17 @@ public abstract class BaseLevelView extends View {
 		return gestureDetector.onTouchEvent(e);
 	}
 
-	public void onLose() {;
+	public void onLose() {
 		BaseLevelActivity host = (BaseLevelActivity) getContext();
 		host.onGameOver(score);
 	}
 
 	public void onPauseButtonPressed() {
 		paused = !paused;
-		if (paused){
-			try {
-				clock.wait();
-			} catch (InterruptedException e) {
-				Log.e("Snake-Remake", e.getMessage());
-			}
-		}
-		else {
-			clock.notify();
+		if (paused) {
+			clock.pauseClock();
+		} else {
+			clock.resumeClock();
 		}
 
 	}
@@ -211,25 +208,25 @@ public abstract class BaseLevelView extends View {
 		return snakePosition;
 	}
 
+	/**
+	 * A clock is used to call this method periodically
+	 */
 	public void onTick() {
 		snake.moveOnBitmap(levelScaledBitmap);
 		snakePosition = snake.getPosition();
-		if (snake.hasDied())
-			onLose();
-		else {
-			if (spawnFruits && snake.hasEatenFruit()) {
-				score++;
+		if (spawnFruits && snake.hasEatenFruit()) {
+			score++;
 
-				// To 'eat' the fruit, we map where the fruit was to white
-				levelScaledBitmap.drawToOriginal(snakePosition.x,
-						snakePosition.y, Color.WHITE);
+			// To 'eat' the fruit, we map where the fruit was to white
+			levelScaledBitmap.drawToOriginal(snakePosition.x, snakePosition.y,
+					Color.WHITE);
 
-				Point pos = ExtraTools.placeRandomFruit(levelScaledBitmap);
-				mapper.mapBlock(pos.x, pos.y, levelScaledBitmap);
-			}
-			snake.draw();
-			mapper.mapSnake(snake, levelScaledBitmap);
+			Point pos = ExtraTools.placeRandomFruit(levelScaledBitmap);
+			mapper.mapBlock(pos.x, pos.y, levelScaledBitmap);
 		}
+		snake.draw();
+		mapper.mapSnake(snake, levelScaledBitmap);
+
 	}
 
 }

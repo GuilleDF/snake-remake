@@ -20,9 +20,15 @@ public class SplashActivity extends Activity {
 		
 		SplashView splash = new SplashView(this);
 		setContentView(splash);
+		Thread background = new Thread(){
+			public void run(){
+				Level.loadLevels(SplashActivity.this);
+						
+				startActivity(new Intent(SplashActivity.this, MenuActivity.class));
+				finish();
+			}
+		};
 		
-		Level.loadLevels(this);
-		startActivity(new Intent(this, MenuActivity.class));
-		finish();
+		background.start();
 	}
 }

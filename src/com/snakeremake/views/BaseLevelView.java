@@ -61,6 +61,68 @@ public abstract class BaseLevelView extends View {
 		// call onCreate(); when extending this class
 	}
 
+	protected void configureScreen() {
+		screenSize = ExtraTools.getScreenSize(getContext());
+		orientation = getResources().getConfiguration().orientation;
+	}
+
+	protected Point currentPosition() {
+		return snakePosition;
+	}
+
+	public Bitmap currentScreen() {
+		setDrawingCacheEnabled(true);
+		return getDrawingCache();
+	}
+
+	private void drawMap(Canvas canvas) {
+		updateVisibleArea();
+		Bitmap bitmapToDraw = visibleBitmap();
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			canvas.drawBitmap(bitmapToDraw, 0,
+					(screenSize.y - bitmapToDraw.getHeight()) / 2, paint);
+		} else {
+			canvas.drawBitmap(bitmapToDraw,
+					(screenSize.x - bitmapToDraw.getWidth()) / 2, 0, paint);
+
+		}
+	}
+
+	private void generateSnake() {
+		snake.setDirection(Direction.UP);
+		for (int i = 0; i < numberOfBlocks; i++) {
+			snake.addBlock();
+		}
+	}
+
+	public boolean isPaused() {
+		return paused;
+	}
+
+	private void loadMap() {
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inDither = false;
+		options.inScaled = false;
+		Bitmap background = BitmapFactory.decodeResource(getResources(),
+				levelResourceId, options);
+		levelScaledBitmap = new ScaledBitmap(background);
+
+		// Maybe not the best place for this line...
+		snake = new Snake(snakePosition.x, snakePosition.y);
+
+		snake.setScaledBitmap(new ScaledBitmap(
+				Bitmap.createBitmap(background.getWidth(),
+						background.getHeight(), Config.ARGB_8888)));
+
+		scaleMap();
+	}
+
+	private void mapTextures() {
+		mapper = new TextureMapper(getResources());
+		mapper.loadTextures();
+		mapper.mapBitmap(levelScaledBitmap);
+	}
+
 	protected void onCreate() {
 		paused = false;
 		score = 0;
@@ -84,61 +146,6 @@ public abstract class BaseLevelView extends View {
 		clock.start();
 	}
 
-	protected void configureScreen() {
-		screenSize = ExtraTools.getScreenSize(getContext());
-		orientation = getResources().getConfiguration().orientation;
-	}
-
-	private void loadMap() {
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inDither = false;
-		options.inScaled = false;
-		Bitmap background = BitmapFactory.decodeResource(getResources(),
-				levelResourceId, options);
-		levelScaledBitmap = new ScaledBitmap(background);
-
-		// Maybe not the best place for this line...
-		snake = new Snake(snakePosition.x, snakePosition.y);
-
-		snake.setScaledBitmap(new ScaledBitmap(
-				Bitmap.createBitmap(background.getWidth(),
-						background.getHeight(), Config.ARGB_8888)));
-
-		scaleMap();
-	}
-
-	protected void scaleMap() {
-		configureScreen();
-		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-			int desiredWidth = screenSize.x * levelScaledBitmap.numBlocksX()
-					/ visibleBlocksX();
-			levelScaledBitmap.scaleByWidth(desiredWidth);
-			snake.getScaledBitmap().scaleByWidth(desiredWidth);
-		} else {
-			int desiredHeight = screenSize.y * levelScaledBitmap.numBlocksY()
-					/ visibleBlocksY();
-			levelScaledBitmap.scaleByHeight(desiredHeight);
-			snake.getScaledBitmap().scaleByHeight(desiredHeight);
-		}
-	}
-
-	protected abstract int visibleBlocksY();
-
-	protected abstract int visibleBlocksX();
-
-	private void generateSnake() {
-		snake.setDirection(Direction.UP);
-		for (int i = 0; i < numberOfBlocks; i++) {
-			snake.addBlock();
-		}
-	}
-
-	private void mapTextures() {
-		mapper = new TextureMapper(getResources());
-		mapper.loadTextures();
-		mapper.mapBitmap(levelScaledBitmap);
-	}
-
 	@Override
 	public void onDraw(Canvas canvas) {
 		canvas.drawBitmap(pause, 0, 0, paint);
@@ -155,12 +162,6 @@ public abstract class BaseLevelView extends View {
 			onLose();
 
 		drawMap(canvas);
-		
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent e) {
-		return gestureDetector.onTouchEvent(e);
 	}
 
 	public void onLose() {
@@ -177,36 +178,6 @@ public abstract class BaseLevelView extends View {
 			clock.resumeClock();
 		}
 
-	}
-
-	public boolean isPaused() {
-		return paused;
-	}
-
-	protected abstract void updateVisibleArea();
-
-	private void drawMap(Canvas canvas) {
-		updateVisibleArea();
-		Bitmap bitmapToDraw = visibleBitmap();
-		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-			canvas.drawBitmap(bitmapToDraw, 0,
-					(screenSize.y - bitmapToDraw.getHeight()) / 2, paint);
-		} else {
-			canvas.drawBitmap(bitmapToDraw,
-					(screenSize.x - bitmapToDraw.getWidth()) / 2, 0, paint);
-
-		}
-	}
-
-	protected abstract Bitmap visibleBitmap();
-
-	public Bitmap currentScreen() {
-		setDrawingCacheEnabled(true);
-		return getDrawingCache();
-	}
-
-	protected Point currentPosition() {
-		return snakePosition;
 	}
 
 	/**
@@ -229,5 +200,33 @@ public abstract class BaseLevelView extends View {
 		mapper.mapSnake(snake, levelScaledBitmap);
 		postInvalidate();
 	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent e) {
+		return gestureDetector.onTouchEvent(e);
+	}
+
+	protected void scaleMap() {
+		configureScreen();
+		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+			int desiredWidth = screenSize.x * levelScaledBitmap.numBlocksX()
+					/ visibleBlocksX();
+			levelScaledBitmap.scaleByWidth(desiredWidth);
+			snake.getScaledBitmap().scaleByWidth(desiredWidth);
+		} else {
+			int desiredHeight = screenSize.y * levelScaledBitmap.numBlocksY()
+					/ visibleBlocksY();
+			levelScaledBitmap.scaleByHeight(desiredHeight);
+			snake.getScaledBitmap().scaleByHeight(desiredHeight);
+		}
+	}
+
+	protected abstract void updateVisibleArea();
+
+	protected abstract Bitmap visibleBitmap();
+
+	protected abstract int visibleBlocksX();
+
+	protected abstract int visibleBlocksY();
 
 }

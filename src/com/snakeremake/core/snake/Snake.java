@@ -95,9 +95,9 @@ public class Snake {
 	 * Draws the snake onto the bitmap (the colors, not the textures)
 	 */
 	public void draw() {
-		calculateColors();
-		for (SnakeBlock block : blocks) {
-			block.draw(scaledBitmap);
+		for (int i = 0; i < blocks.size(); i++) {
+			calculateColor(i);
+			blocks.get(i).draw(scaledBitmap);
 		}
 	}
 
@@ -109,96 +109,98 @@ public class Snake {
 	 * Sets each {@link SnakeBlock} to the appropriate color, depending on each
 	 * block's type and position
 	 */
-	private void calculateColors() {
-		for (int i = 0; i < blocks.size(); i++) {
-			if (blocks.get(i).isHead()) {
-				switch (direction) {
-				case UP:
-					blocks.get(i).setColor(TextureMap.SNAKE_HEAD_UP);
-					break;
-				case RIGHT:
-					blocks.get(i).setColor(TextureMap.SNAKE_HEAD_RIGHT);
-					break;
-				case DOWN:
-					blocks.get(i).setColor(TextureMap.SNAKE_HEAD_DOWN);
-					break;
-				case LEFT:
-					blocks.get(i).setColor(TextureMap.SNAKE_HEAD_LEFT);
-					break;
-				}
-			} else {
-				if (blocks.get(i).getCurrentPosition().x == blocks.get(i - 1)
-						.getCurrentPosition().x) {
-					if (blocks.get(i).isTail()) {
-						if (blocks.get(i).getCurrentPosition().y < blocks.get(
-								i - 1).getCurrentPosition().y) {
-							blocks.get(i).setColor(TextureMap.SNAKE_TAIL_DOWN);
-						} else {
-							blocks.get(i).setColor(TextureMap.SNAKE_TAIL_UP);
-						}
+	private void calculateColor(int blockIndex) {
+		if (blocks.get(blockIndex).isHead()) {
+			switch (direction) {
+			case UP:
+				blocks.get(blockIndex).setColor(TextureMap.SNAKE_HEAD_UP);
+				break;
+			case RIGHT:
+				blocks.get(blockIndex).setColor(TextureMap.SNAKE_HEAD_RIGHT);
+				break;
+			case DOWN:
+				blocks.get(blockIndex).setColor(TextureMap.SNAKE_HEAD_DOWN);
+				break;
+			case LEFT:
+				blocks.get(blockIndex).setColor(TextureMap.SNAKE_HEAD_LEFT);
+				break;
+			}
+		} else {
+			if (blocks.get(blockIndex).getCurrentPosition().x == blocks.get(
+					blockIndex - 1).getCurrentPosition().x) {
+				if (blocks.get(blockIndex).isTail()) {
+					if (blocks.get(blockIndex).getCurrentPosition().y < blocks
+							.get(blockIndex - 1).getCurrentPosition().y) {
+						blocks.get(blockIndex).setColor(
+								TextureMap.SNAKE_TAIL_DOWN);
 					} else {
-						if (blocks.get(i + 1).getCurrentPosition().x == blocks
-								.get(i).getCurrentPosition().x) {
-							blocks.get(i).setColor(
-									TextureMap.SNAKE_BODY_VERTICAL);
-						} else if (blocks.get(i + 1).getCurrentPosition().x < blocks
-								.get(i).getCurrentPosition().x) {
-							if (blocks.get(i).getCurrentPosition().y < blocks
-									.get(i - 1).getCurrentPosition().y) {
-								blocks.get(i)
-										.setColor(TextureMap.SNAKE_BEND_DL);
-							} else {
-								blocks.get(i)
-										.setColor(TextureMap.SNAKE_BEND_UL);
-							}
-
-						} else {
-							if (blocks.get(i).getCurrentPosition().y < blocks
-									.get(i - 1).getCurrentPosition().y) {
-								blocks.get(i)
-										.setColor(TextureMap.SNAKE_BEND_DR);
-							} else {
-								blocks.get(i)
-										.setColor(TextureMap.SNAKE_BEND_UR);
-							}
-
-						}
+						blocks.get(blockIndex).setColor(
+								TextureMap.SNAKE_TAIL_UP);
 					}
 				} else {
-					if (blocks.get(i).isTail()) {
-						if (blocks.get(i).getCurrentPosition().x < blocks.get(
-								i - 1).getCurrentPosition().x) {
-							blocks.get(i).setColor(TextureMap.SNAKE_TAIL_RIGHT);
+					if (blocks.get(blockIndex + 1).getCurrentPosition().x == blocks
+							.get(blockIndex).getCurrentPosition().x) {
+						blocks.get(blockIndex).setColor(
+								TextureMap.SNAKE_BODY_VERTICAL);
+					} else if (blocks.get(blockIndex + 1).getCurrentPosition().x < blocks
+							.get(blockIndex).getCurrentPosition().x) {
+						if (blocks.get(blockIndex).getCurrentPosition().y < blocks
+								.get(blockIndex - 1).getCurrentPosition().y) {
+							blocks.get(blockIndex).setColor(
+									TextureMap.SNAKE_BEND_DL);
 						} else {
-							blocks.get(i).setColor(TextureMap.SNAKE_TAIL_LEFT);
+							blocks.get(blockIndex).setColor(
+									TextureMap.SNAKE_BEND_UL);
 						}
+
 					} else {
-						if (blocks.get(i + 1).getCurrentPosition().y == blocks
-								.get(i).getCurrentPosition().y) {
-							blocks.get(i).setColor(
-									TextureMap.SNAKE_BODY_HORIZONTAL);
-						} else if (blocks.get(i + 1).getCurrentPosition().y < blocks
-								.get(i).getCurrentPosition().y) {
-							if (blocks.get(i).getCurrentPosition().x < blocks
-									.get(i - 1).getCurrentPosition().x) {
-								blocks.get(i)
-										.setColor(TextureMap.SNAKE_BEND_UR);
-							} else {
-								blocks.get(i)
-										.setColor(TextureMap.SNAKE_BEND_UL);
-							}
-
+						if (blocks.get(blockIndex).getCurrentPosition().y < blocks
+								.get(blockIndex - 1).getCurrentPosition().y) {
+							blocks.get(blockIndex).setColor(
+									TextureMap.SNAKE_BEND_DR);
 						} else {
-							if (blocks.get(i).getCurrentPosition().x < blocks
-									.get(i - 1).getCurrentPosition().x) {
-								blocks.get(i)
-										.setColor(TextureMap.SNAKE_BEND_DR);
-							} else {
-								blocks.get(i)
-										.setColor(TextureMap.SNAKE_BEND_DL);
-							}
-
+							blocks.get(blockIndex).setColor(
+									TextureMap.SNAKE_BEND_UR);
 						}
+
+					}
+				}
+			} else {
+				if (blocks.get(blockIndex).isTail()) {
+					if (blocks.get(blockIndex).getCurrentPosition().x < blocks
+							.get(blockIndex - 1).getCurrentPosition().x) {
+						blocks.get(blockIndex).setColor(
+								TextureMap.SNAKE_TAIL_RIGHT);
+					} else {
+						blocks.get(blockIndex).setColor(
+								TextureMap.SNAKE_TAIL_LEFT);
+					}
+				} else {
+					if (blocks.get(blockIndex + 1).getCurrentPosition().y == blocks
+							.get(blockIndex).getCurrentPosition().y) {
+						blocks.get(blockIndex).setColor(
+								TextureMap.SNAKE_BODY_HORIZONTAL);
+					} else if (blocks.get(blockIndex + 1).getCurrentPosition().y < blocks
+							.get(blockIndex).getCurrentPosition().y) {
+						if (blocks.get(blockIndex).getCurrentPosition().x < blocks
+								.get(blockIndex - 1).getCurrentPosition().x) {
+							blocks.get(blockIndex).setColor(
+									TextureMap.SNAKE_BEND_UR);
+						} else {
+							blocks.get(blockIndex).setColor(
+									TextureMap.SNAKE_BEND_UL);
+						}
+
+					} else {
+						if (blocks.get(blockIndex).getCurrentPosition().x < blocks
+								.get(blockIndex - 1).getCurrentPosition().x) {
+							blocks.get(blockIndex).setColor(
+									TextureMap.SNAKE_BEND_DR);
+						} else {
+							blocks.get(blockIndex).setColor(
+									TextureMap.SNAKE_BEND_DL);
+						}
+
 					}
 				}
 			}

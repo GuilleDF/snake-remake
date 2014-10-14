@@ -17,6 +17,7 @@ public class Game {
 	private static Level level;
 	
 	public Game(MenuActivity ma,Level level){
+		inst = this;
 		setLevel(level);
 		ma.startActivity(new Intent(ma, BaseLevelActivity.class));
 	}

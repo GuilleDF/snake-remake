@@ -1,5 +1,7 @@
 package com.snakeremake.activity;
 
+import java.util.HashMap;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +9,8 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.snakeremake.main.Level;
+import com.snakeremake.menu.Action;
+import com.snakeremake.menu.ActionEnterMenu;
 import com.snakeremake.views.SplashView;
 
 public class SplashActivity extends Activity {
@@ -23,8 +27,12 @@ public class SplashActivity extends Activity {
 		Thread background = new Thread(){
 			public void run(){
 				Level.loadLevels(SplashActivity.this);
-						
-				startActivity(new Intent(SplashActivity.this, MenuActivity.class));
+				Intent in = new Intent(SplashActivity.this, MenuActivity.class);
+				HashMap<String,Action> map = new HashMap<String,Action>();
+				map.put("Un jugador", new ActionEnterMenu(Level.generateHashMap()));
+				map.put("Multijugador", null);
+				in.putExtra("list", map);
+				startActivity(in);				
 				finish();
 			}
 		};

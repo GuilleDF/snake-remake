@@ -3,6 +3,7 @@ package com.snakeremake.main;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -12,6 +13,8 @@ import android.graphics.Point;
 import android.util.Log;
 
 import com.snakeremake.R;
+import com.snakeremake.menu.Action;
+import com.snakeremake.menu.ActionGame;
 import com.snakeremake.views.BaseLevelView;
 
 public abstract class Level {
@@ -98,7 +101,19 @@ public abstract class Level {
 		this.spawnFruits = spawnFruits;
 		this.levelResourceID = levelResourceID;
 	}
-
+	//Muy raro lo del cast...
+	//Voy a debugear
+	//La ultima vez que hiciste uno de esos recoveries me petaste el workspace :P
+	// es que me daba un error en una clase jajaja
+	// que no se habia sincronizado bien
 	public abstract BaseLevelView getView(Context context);
+
+	public static HashMap<String,Action> generateHashMap() {
+		HashMap<String, Action> map = new HashMap<String,Action>();
+		for(Level l:levels){
+			map.put(l.getName(), new ActionGame());
+		}
+		return map;
+	}
 
 }

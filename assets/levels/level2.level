@@ -1,0 +1,11 @@
+# Level 2
+
+name = Level 2
+type = scrollable
+levelID = 2
+spawnPoint = 3,27
+snakeSize = 5
+spawnFruits = true
+levelImageName = bg_3030
+visibleAreaPosition = 0,10
+visibleBlocks = 20,20

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Snake Remake</string>
     <string name="game_over">GAME OVER</string>
     <string name="title_activity_menu">MenuActivity</string>

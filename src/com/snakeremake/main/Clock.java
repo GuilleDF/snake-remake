@@ -1,5 +1,7 @@
 package com.snakeremake.main;
 
+import android.util.Log;
+
 import com.snakeremake.views.BaseLevelView;
 
 public class Clock extends Thread {
@@ -8,6 +10,7 @@ public class Clock extends Thread {
 	private double ticksPerSecond;
 	private boolean running;
 	private boolean stopped;
+	private double realTPS = 0;
 
 	public Clock(BaseLevelView view, double ticksPerSecond) {
 		super();
@@ -19,23 +22,25 @@ public class Clock extends Thread {
 	public void run() {
 		stopped = false;
 		running = true;
-		long lastTime = System.nanoTime();
-		double ns = (1 / ticksPerSecond) * 1000000000;
+		long lastTime = System.currentTimeMillis();
+		double ms = (1 / ticksPerSecond) * 1000;
 
-		while (running) {
-			long currentTime = System.nanoTime();
-			if (currentTime - lastTime >= ns) {
-				lastTime = currentTime;
-				tick();
+		while (!stopped) {
+			if (running) {
+				long currentTime = System.currentTimeMillis();
+				if (currentTime - lastTime >= ms) {
+					tick();
+					realTPS = (1.0 / ((System.currentTimeMillis() - lastTime)) * 1000);
+					//Log.i("Snake-Remake",realTPS+"");
+					lastTime = currentTime;
+				}
 			}
+		try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+			} 
 		}
-
-		// This is so pausing doesn't stop the thread
-		while (!running) {}
-		if (!stopped)
-			run();
 	}
-
 	public void pauseClock() {
 		running = false;
 	}
@@ -50,6 +55,10 @@ public class Clock extends Thread {
 
 	private void tick() {
 		view.onTick();
+	}
+
+	public double getRealTPS() {
+		return realTPS;
 	}
 
 }

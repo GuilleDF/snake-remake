@@ -1,9 +1,0 @@
-# Level 1
-
-name = Level 1
-type = fixed
-levelID = 1
-spawnPoint = 3,17
-snakeSize = 5
-spawnFruits = true
-levelImageName = bg_2020

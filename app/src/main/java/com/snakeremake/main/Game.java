@@ -7,7 +7,7 @@ import com.snakeremake.activity.MenuActivity;
 
 public class Game {
 	
-
+    //Are we using this?
 	public static Game inst;
 	public static Game inst(){
 		return inst;
@@ -15,10 +15,14 @@ public class Game {
 	
 	
 	private static Level level;
+
+    public static Clock clock;
 	
 	public Game(MenuActivity ma,Level level){
 		inst = this;
 		setLevel(level);
+        clock = new Clock(20);
+        clock.start();
 		ma.startActivity(new Intent(ma, BaseLevelActivity.class));
 	}
 
@@ -29,8 +33,5 @@ public class Game {
 	public static Level getLevel() {
 		return level;
 	}
-	
-	
-
 
 }

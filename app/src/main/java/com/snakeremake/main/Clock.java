@@ -6,15 +6,19 @@ import com.snakeremake.views.BaseLevelView;
 
 public class Clock extends Thread {
 
-	private BaseLevelView view;
-	private double ticksPerSecond;
+    public double getTicksPerSecond() {
+        return ticksPerSecond;
+    }
+
+    private double ticksPerSecond;
 	private boolean running;
 	private boolean stopped;
 	private double realTPS = 0;
 
-	public Clock(BaseLevelView view, double ticksPerSecond) {
+    private BaseLevelView view;
+
+	public Clock(double ticksPerSecond) {
 		super();
-		this.view = view;
 		this.ticksPerSecond = ticksPerSecond;
 	}
 
@@ -54,11 +58,13 @@ public class Clock extends Thread {
 	}
 
 	private void tick() {
-		view.onTick();
+		if(view != null) view.onTick();
 	}
 
 	public double getRealTPS() {
 		return realTPS;
 	}
+
+    public void setView(BaseLevelView view) { this.view = view; }
 
 }

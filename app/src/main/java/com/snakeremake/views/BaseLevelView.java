@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +18,7 @@ import android.view.View;
 import com.snakeremake.R;
 import com.snakeremake.activity.BaseLevelActivity;
 import com.snakeremake.core.snake.Snake;
-import com.snakeremake.main.Clock;
+import com.snakeremake.main.Game;
 import com.snakeremake.render.ScaledBitmap;
 import com.snakeremake.render.TextureMapper;
 import com.snakeremake.utils.Direction;
@@ -48,7 +49,11 @@ public abstract class BaseLevelView extends View {
 	private int orientation;
 
 	private int score;
-	private Clock clock;
+
+    private Bitmap background;
+
+    private int tickCount;
+    private int speed = 5; //This will be default for now
 
 	public BaseLevelView(Context context, Point snakePosition,
 			int numberOfBlocks, boolean spawnFruits, int levelResourceId) {
@@ -70,11 +75,6 @@ public abstract class BaseLevelView extends View {
 		return snakePosition;
 	}
 
-	public Bitmap currentScreen() {
-		setDrawingCacheEnabled(true);
-		return getDrawingCache();
-	}
-
 	private void drawMap(Canvas canvas) {
 		updateVisibleArea();
 		Bitmap bitmapToDraw = visibleBitmap();
@@ -89,6 +89,12 @@ public abstract class BaseLevelView extends View {
 	}
 
 	private void generateSnake() {
+        snake = new Snake(snakePosition.x, snakePosition.y);
+
+        snake.setScaledBitmap(new ScaledBitmap(
+                Bitmap.createBitmap(background.getWidth(),
+                        background.getHeight(), Config.ARGB_8888)));
+
 		snake.setDirection(Direction.UP);
 		for (int i = 0; i < numberOfBlocks; i++) {
 			snake.addBlock();
@@ -103,18 +109,10 @@ public abstract class BaseLevelView extends View {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inDither = false;
 		options.inScaled = false;
-		Bitmap background = BitmapFactory.decodeResource(getResources(),
+		background = BitmapFactory.decodeResource(getResources(),
 				levelResourceId, options);
 		levelScaledBitmap = new ScaledBitmap(background);
 
-		// Maybe not the best place for this line...
-		snake = new Snake(snakePosition.x, snakePosition.y);
-
-		snake.setScaledBitmap(new ScaledBitmap(
-				Bitmap.createBitmap(background.getWidth(),
-						background.getHeight(), Config.ARGB_8888)));
-
-		scaleMap();
 	}
 
 	private void mapTextures() {
@@ -128,6 +126,7 @@ public abstract class BaseLevelView extends View {
 		score = 0;
 		loadMap();
 		generateSnake();
+        scaleMap();
 
 		gestureDetector = new GestureDetector(getContext(),
 				new GestureProcessor(snake, this));
@@ -141,9 +140,7 @@ public abstract class BaseLevelView extends View {
 		pause = BitmapFactory.decodeResource(getResources(), R.drawable.pause);
 
 		mapTextures();
-
-		clock = new Clock(this, 5);
-		clock.start();
+        Game.clock.setView(this);
 	}
 
 	@Override
@@ -165,7 +162,7 @@ public abstract class BaseLevelView extends View {
 	}
 
 	public void onLose() {
-		clock.stopClock();
+		Game.clock.stopClock();
 		BaseLevelActivity host = (BaseLevelActivity) getContext();
 		host.onGameOver(score);
 	}
@@ -173,9 +170,9 @@ public abstract class BaseLevelView extends View {
 	public void onPauseButtonPressed() {
 		paused = !paused;
 		if (paused) {
-			clock.pauseClock();
+			Game.clock.pauseClock();
 		} else {
-			clock.resumeClock();
+			Game.clock.resumeClock();
 		}
 
 	}
@@ -184,6 +181,10 @@ public abstract class BaseLevelView extends View {
 	 * A clock is used to call this method periodically
 	 */
 	public void onTick() {
+        tickCount++;
+        if(tickCount != (int)Game.clock.getTicksPerSecond()/speed - 1) return;
+        tickCount=0;
+
 		snake.moveOnBitmap(levelScaledBitmap);
 		snakePosition = snake.getPosition();
 		if (spawnFruits && snake.hasEatenFruit()) {
@@ -206,6 +207,10 @@ public abstract class BaseLevelView extends View {
 		return gestureDetector.onTouchEvent(e);
 	}
 
+    /**
+     * Map has to be loaded and snake has to be generated
+     * This should throw exceptions in the future
+     */
 	protected void scaleMap() {
 		configureScreen();
 		if (orientation == Configuration.ORIENTATION_PORTRAIT) {

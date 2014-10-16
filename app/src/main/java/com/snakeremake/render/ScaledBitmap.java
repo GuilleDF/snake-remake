@@ -5,7 +5,10 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-
+/**
+ * Stores two Bitmaps, {@link #originalBitmap} as the key,
+ * and {@link #scaledBitmap} as the image to be rendered
+ */
 public class ScaledBitmap {
 	private Bitmap originalBitmap;
 	private Bitmap scaledBitmap;

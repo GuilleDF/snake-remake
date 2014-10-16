@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <item name="menu_location" type="id"/>
+
+    <string name="app_id">307174363083</string>
+    <string name="achievement_starter">CgkIy5-TqPgIEAIQAQ</string>
+    <string name="achievement_you_got_it">CgkIy5-TqPgIEAIQAg</string>
+    <string name="achievement_competitive">CgkIy5-TqPgIEAIQAw</string>
+    <string name="achievement_recurrent">CgkIy5-TqPgIEAIQBA</string>
+    <string name="achievement_the_boss">CgkIy5-TqPgIEAIQBQ</string>
+    <string name="leaderboard_points">CgkIy5-TqPgIEAIQBg</string>
+
+</resources>

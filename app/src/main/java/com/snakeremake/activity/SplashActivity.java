@@ -1,17 +1,16 @@
 package com.snakeremake.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.plus.Plus;
 import com.snakeremake.R;
+import com.snakeremake.basegame.BaseGameActivity;
 import com.snakeremake.main.Level;
 import com.snakeremake.menu.Action;
 import com.snakeremake.menu.ActionEnterMenu;
@@ -19,68 +18,71 @@ import com.snakeremake.views.SplashView;
 
 import java.util.HashMap;
 
-public class SplashActivity extends Activity implements ConnectionCallbacks,
-		OnConnectionFailedListener {
-	GoogleApiClient mGoogleApiClient;
+public class SplashActivity extends BaseGameActivity{
+    private GoogleApiClient mGoogleApiClient;
 
+    private static final int RC_SIGN_IN = 9001;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		/*mGoogleApiClient = new GoogleApiClient.Builder(this)
-				.addApi(Games.API)
-				.addScope(Games.SCOPE_GAMES)
-				.addConnectionCallbacks(this)
-				.addOnConnectionFailedListener(this)
-				.build();*/
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-		SplashView splash = new SplashView(this);
-		setContentView(splash);
-		Thread background = new Thread() {
-			public void run() {
-				Level.loadLevels(SplashActivity.this);
-				Intent in = new Intent(SplashActivity.this, MenuActivity.class);
-				HashMap<String, Action> map = new HashMap<String, Action>();
-				map.put((String) getResources().getText(R.string.single_player),
-						new ActionEnterMenu(Level.generateHashMap()));
-				map.put((String) getResources().getText(R.string.multiplayer),
-						null);
-				in.putExtra("list", map);
-				startActivity(in);
-				finish();
-			}
-		};
-
-		background.start();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                .build();
 	}
 
-	@Override
-	public void onConnectionFailed(ConnectionResult arg0) {
-		Log.i("Snake-Remake", "Connection Failed!");
-	}
+    @Override
+    protected void onStart() {
+        SplashView splash = new SplashView(this);
+        setContentView(splash);
+        mGoogleApiClient.connect();
+        super.onStart();
 
-	@Override
-	public void onConnected(Bundle arg0) {
-		Log.i("Snake-Remake", "Connected!");
-	}
+    }
 
-	@Override
-	public void onConnectionSuspended(int arg0) {
-		Log.i("Snake-Remake", "Connection suspended");
-	}
+    private void start(){
+        Log.i("Snake-Remake","Connection status:"+mGoogleApiClient.isConnected());
+        if(mGoogleApiClient.isConnected()){
+            Log.i("Snake-Remake","Welcome back, "+Games.getCurrentAccountName(getApiClient()));
+        }
+        Thread background = new Thread() {
+            public void run() {
+                Level.loadLevels(SplashActivity.this);
+                Intent in = new Intent(SplashActivity.this, MenuActivity.class);
+                HashMap<String, Action> map = new HashMap<String, Action>();
+                map.put((String) getResources().getText(R.string.single_player),
+                        new ActionEnterMenu(Level.generateHashMap()));
+                map.put((String) getResources().getText(R.string.multiplayer),
+                        null);
+                map.put("Connected to g-play:"+mGoogleApiClient.isConnected(), null);
+                in.putExtra("list", map);
+                startActivity(in);
+                finish();
+            }
+        };
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-		//mGoogleApiClient.connect();
-	}
+        background.start();
+    }
 
 	@Override
 	protected void onStop() {
-		//mGoogleApiClient.disconnect();
 		super.onStop();
+        mGoogleApiClient.disconnect();
 	}
 
+
+    @Override
+    public void onSignInFailed() {
+        Log.i("Snake-Remake","Failed while signing in!");
+        start();
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        Log.i("Snake-Remake","Signed in successfully!");
+        start();
+    }
 }

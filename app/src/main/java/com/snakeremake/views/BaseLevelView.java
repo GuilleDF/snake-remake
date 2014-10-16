@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -207,7 +208,7 @@ public abstract class BaseLevelView extends View {
 			mapper.mapBlock(pos.x, pos.y, levelScaledBitmap);
 		}
 		snake.draw();
-		mapper.mapSnake(snake, levelScaledBitmap);
+		mapper.mapSnake(snake);
 		postInvalidate();
 	}
 

@@ -1,13 +1,15 @@
 package com.snakeremake.activity;
 
-import com.snakeremake.main.Game;
-import com.snakeremake.views.BaseLevelView;
-import com.snakeremake.views.GameOverView;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.google.android.gms.games.Games;
+import com.snakeremake.R;
+import com.snakeremake.main.Game;
+import com.snakeremake.views.BaseLevelView;
+import com.snakeremake.views.GameOverView;
 
 /**
  * Extend this class and override {@link #setLevelView()} to return
@@ -44,14 +46,18 @@ public class BaseLevelActivity extends Activity {
 	}
 
 	protected BaseLevelView setLevelView(){
-		return Game.getLevel().getView(this);
+		return Game.inst().getLevel().getView(this);
 	}
 
 	public void onGameOver(int score) {
 		gameOverView.setScore(score);
 		setContentView(gameOverView);
 		gameOverView.requestFocus();
-	}
+        if(SplashActivity.getApi()!=null){
+            String id = getString(R.string.leaderboard_points);
+            Games.Leaderboards.submitScore(SplashActivity.getApi(), id, score);
+        }
+    }
 
 	public void restartGame() {
 		// Closes this activity, falling back to it's parent

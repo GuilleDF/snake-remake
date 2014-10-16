@@ -7,31 +7,33 @@ import com.snakeremake.activity.MenuActivity;
 
 public class Game {
 	
-    //Are we using this?
+    //Are we using this? I Am
 	public static Game inst;
 	public static Game inst(){
 		return inst;
 	}
 	
 	
-	private static Level level;
+	private Level level;
+    private Clock clock;
 
-    public static Clock clock;
-	
-	public Game(MenuActivity ma,Level level){
-		inst = this;
-		setLevel(level);
+    public Game(MenuActivity ma,Level level){
+        inst = this;
+        setLevel(level);
         clock = new Clock(20);
         clock.start();
-		ma.startActivity(new Intent(ma, BaseLevelActivity.class));
-	}
+        ma.startActivity(new Intent(ma, BaseLevelActivity.class));
+    }
+
 
 	public void setLevel(Level level){
-		Game.level = level;
+		Game.inst().level = level;
 	}
 	
-	public static Level getLevel() {
-		return level;
+	public Level getLevel() {
+		return inst().level;
 	}
+
+    public Clock getClock() {return clock;}
 
 }

@@ -14,14 +14,17 @@ import com.snakeremake.basegame.BaseGameActivity;
 import com.snakeremake.main.Level;
 import com.snakeremake.menu.Action;
 import com.snakeremake.menu.ActionEnterMenu;
+import com.snakeremake.menu.ActionScoreboard;
 import com.snakeremake.views.SplashView;
 
 import java.util.HashMap;
 
 public class SplashActivity extends BaseGameActivity{
-    private GoogleApiClient mGoogleApiClient;
+    private static GoogleApiClient mGoogleApiClient;
+    private static GoogleApiClient api;
 
     private static final int RC_SIGN_IN = 9001;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -57,7 +60,8 @@ public class SplashActivity extends BaseGameActivity{
                         new ActionEnterMenu(Level.generateHashMap()));
                 map.put((String) getResources().getText(R.string.multiplayer),
                         null);
-                map.put("Connected to g-play:"+mGoogleApiClient.isConnected(), null);
+                map.put((String) getResources().getText(R.string.scoreboards), new ActionScoreboard());
+                map.put("Connected to google play:"+mGoogleApiClient.isConnected(), null);
                 in.putExtra("list", map);
                 startActivity(in);
                 finish();
@@ -65,6 +69,7 @@ public class SplashActivity extends BaseGameActivity{
         };
 
         background.start();
+        api = getApiClient();
     }
 
 	@Override
@@ -84,5 +89,9 @@ public class SplashActivity extends BaseGameActivity{
     public void onSignInSucceeded() {
         Log.i("Snake-Remake","Signed in successfully!");
         start();
+    }
+
+    public static GoogleApiClient getApi(){
+        return api;
     }
 }

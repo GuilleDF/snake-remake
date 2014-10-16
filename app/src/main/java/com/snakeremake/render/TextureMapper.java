@@ -3,6 +3,7 @@ package com.snakeremake.render;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 
 import com.snakeremake.R;
 import com.snakeremake.core.snake.Snake;
@@ -42,6 +43,8 @@ public class TextureMapper {
 	private Bitmap snakeBendDL;
 	private Bitmap snakeBendUR;
 	private Bitmap snakeBendUL;
+
+    private Bitmap transparent;
 
 	public TextureMapper(Resources res) {
 		resources = res;
@@ -84,6 +87,9 @@ public class TextureMapper {
 				R.drawable.snake_bend_ur);
 		snakeBendUL = BitmapFactory.decodeResource(resources,
 				R.drawable.snake_bend_ul);
+
+        transparent = Bitmap.createBitmap(20,20, Bitmap.Config.ARGB_8888);
+        transparent.eraseColor(Color.argb(0,0,0,0));
 	}
 
 	/**
@@ -110,16 +116,16 @@ public class TextureMapper {
 
 			// First we make sure the floor is mapped properly
 			mapBlock(block.getCurrentPosition().x,
-					block.getCurrentPosition().y, bitmap);
+					block.getCurrentPosition().y, bitmap, snake.getScaledBitmap());
 
 			// Then we map the snake
 			mapBlock(block.getCurrentPosition().x,
-					block.getCurrentPosition().y, snake.getScaledBitmap(), bitmap);
+					block.getCurrentPosition().y, snake.getScaledBitmap());
 
 			// We also make sure to remap the floor after the snake has passed it
 			if (block.isTail() && block.getLastPosition() != null) {
 				mapBlock(block.getLastPosition().x, block.getLastPosition().y,
-						bitmap);
+						bitmap, snake.getScaledBitmap());
 			}
 		}
 	}
@@ -172,6 +178,8 @@ public class TextureMapper {
 			target.drawBlock(x, y, wall);
 		else if (color == TextureMap.FRUIT)
 			target.drawBlock(x, y, fruit);
+        else if (color == TextureMap.TRANSPARENT)
+            target.drawBlock(x, y, transparent);
 	}
 
 	/**

@@ -27,8 +27,13 @@ public class StaticLevelView extends BaseLevelView {
 	protected void updateVisibleArea() {}
 
 	@Override
-	protected Bitmap visibleBitmap() {
+	protected Bitmap visibleLevelBitmap() {
 		return levelScaledBitmap.getScaledBitmap();
 	}
+
+    @Override
+    protected Bitmap visibleFruitBitmap() {
+        return fruitScaledBitmap.getScaledBitmap();
+    }
 
 }

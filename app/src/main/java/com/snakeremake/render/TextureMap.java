@@ -30,4 +30,6 @@ public class TextureMap {
 	public static final int SNAKE_BEND_UR = Color.argb(255, 150, 255, 100);
 	public static final int SNAKE_BEND_UL = Color.argb(255, 150, 255, 150);
 
+    public static final int TRANSPARENT = Color.argb(255,1,1,1);
+
 }

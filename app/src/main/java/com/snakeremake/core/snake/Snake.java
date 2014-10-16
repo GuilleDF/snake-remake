@@ -6,6 +6,7 @@ import java.util.List;
 import com.snakeremake.render.ScaledBitmap;
 import com.snakeremake.render.TextureMap;
 import com.snakeremake.utils.Direction;
+import com.snakeremake.views.BaseLevelView;
 
 import android.graphics.Color;
 import android.graphics.Point;
@@ -210,18 +211,21 @@ public class Snake {
 	/**
 	 * Does the same as {@link #move()}, but checks for collisions
 	 * 
-	 * @param bitmap
-	 *            The bitmap to use for collision checking
+	 * @param view
+     *             The BaseLevelView to use for collision checking
 	 */
-	public void moveOnBitmap(ScaledBitmap bitmap) {
+	public void moveOnBitmap(BaseLevelView view) {
+        ScaledBitmap levelMap = view.levelScaledBitmap;
+        ScaledBitmap fruitMap = view.fruitScaledBitmap;
 		SnakeBlock inFront = new SnakeBlock(position.x, position.y);
 		inFront.move(direction);
 		Point pos = inFront.getCurrentPosition();
-		if (bitmap.getBlock(pos.x, pos.y) == TextureMap.FLOOR
-				&& getScaledBitmap().getBlock(pos.x, pos.y) == TextureMap.FLOOR) {
+		if (levelMap.getBlock(pos.x, pos.y) == TextureMap.FLOOR
+				&& getScaledBitmap().getBlock(pos.x, pos.y) == TextureMap.FLOOR
+                && levelMap.getBlock(pos.x, pos.y) == TextureMap.FLOOR) {
 			move();
 		} else {
-			onCrash(bitmap.getBlock(pos.x, pos.y));
+			onCrash(levelMap.getBlock(pos.x, pos.y));
 		}
 	}
 

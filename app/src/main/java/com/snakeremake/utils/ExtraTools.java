@@ -10,6 +10,7 @@ import com.snakeremake.views.BaseLevelView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -39,11 +40,17 @@ public class ExtraTools {
         ScaledBitmap snakeMap = view.snake.getScaledBitmap();
 		int x,y;
 		do{
-		Random rand = new Random();
-		x = rand.nextInt(fruitMap.numBlocksX());
-		y = rand.nextInt(fruitMap.numBlocksY());
+		    Random rand = new Random();
+		    x = rand.nextInt(fruitMap.numBlocksX());
+		    y = rand.nextInt(fruitMap.numBlocksY());
+            Log.i("Snake-Remake", "Fruit:" + fruitMap.getBlock(x, y)
+                    + "\nSnake:" + snakeMap.getBlock(x, y)
+                    + "\nLevel:" + levelMap.getBlock(x, y)
+                    + "\nFLOOR"  + TextureMap.FLOOR
+                    + "\nTRANS"  + TextureMap.TRANSPARENT
+            );
 		}while(fruitMap.getBlock(x, y) != TextureMap.TRANSPARENT   ||
-                snakeMap.getBlock(x, y) != TextureMap.TRANSPARENT  ||
+                snakeMap.getBlock(x, y) != TextureMap.TRANSPARENT  || //Snake has floor blocks?
                 levelMap.getBlock(x, y) != TextureMap.FLOOR
                 );
 		

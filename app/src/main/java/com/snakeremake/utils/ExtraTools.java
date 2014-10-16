@@ -42,8 +42,8 @@ public class ExtraTools {
 		Random rand = new Random();
 		x = rand.nextInt(fruitMap.numBlocksX());
 		y = rand.nextInt(fruitMap.numBlocksY());
-		}while(fruitMap.getBlock(x, y) != TextureMap.FLOOR   ||
-                snakeMap.getBlock(x, y) != TextureMap.FLOOR  ||
+		}while(fruitMap.getBlock(x, y) != TextureMap.TRANSPARENT   ||
+                snakeMap.getBlock(x, y) != TextureMap.TRANSPARENT  ||
                 levelMap.getBlock(x, y) != TextureMap.FLOOR
                 );
 		

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import com.snakeremake.R;
 import com.snakeremake.core.snake.Snake;
 import com.snakeremake.core.snake.SnakeBlock;
+import com.snakeremake.utils.ExtraTools;
 
 /**
  * Assigns a {@link android.graphics.Bitmap} to a color (specified in {@link com.snakeremake.render.TextureMap}) <br>
@@ -89,7 +90,8 @@ public class TextureMapper {
 				R.drawable.snake_bend_ul);
 
         transparent = Bitmap.createBitmap(20,20, Bitmap.Config.ARGB_8888);
-        transparent.eraseColor(Color.argb(0,0,0,0));
+        transparent.setHasAlpha(true);
+        transparent.eraseColor(Color.TRANSPARENT);
 	}
 
 	/**

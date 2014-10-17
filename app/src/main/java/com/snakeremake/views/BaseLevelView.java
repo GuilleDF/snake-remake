@@ -10,6 +10,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -119,7 +121,8 @@ public abstract class BaseLevelView extends View {
 		levelScaledBitmap = new ScaledBitmap(background);
         fruitScaledBitmap = new ScaledBitmap(
                 Bitmap.createBitmap(background.getWidth(),
-                        background.getHeight(), Config.ARGB_8888));
+                        background.getHeight(), Config.ARGB_8888)
+        );
         fruitScaledBitmap.getOriginalBitmap().eraseColor(TextureMap.TRANSPARENT);
 
 	}
@@ -147,6 +150,7 @@ public abstract class BaseLevelView extends View {
 		}
 
 		paint = new Paint();
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
 		pause = BitmapFactory.decodeResource(getResources(), R.drawable.pause);
 
 		mapTextures();

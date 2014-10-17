@@ -6,6 +6,7 @@ import java.util.List;
 import com.snakeremake.render.ScaledBitmap;
 import com.snakeremake.render.TextureMap;
 import com.snakeremake.utils.Direction;
+import com.snakeremake.utils.ExtraTools;
 import com.snakeremake.views.BaseLevelView;
 
 import android.graphics.Color;
@@ -220,12 +221,14 @@ public class Snake {
 		SnakeBlock inFront = new SnakeBlock(position.x, position.y);
 		inFront.move(direction);
 		Point pos = inFront.getCurrentPosition();
-		if (levelMap.getBlock(pos.x, pos.y) == TextureMap.FLOOR
-				&& getScaledBitmap().getBlock(pos.x, pos.y) == TextureMap.FLOOR
-                && levelMap.getBlock(pos.x, pos.y) == TextureMap.FLOOR) {
-			move();
+		if (levelMap.getBlock(pos.x, pos.y) != TextureMap.FLOOR)
+            onCrash(levelMap.getBlock(pos.x, pos.y));
+		else if(getScaledBitmap().getBlock(pos.x, pos.y) != TextureMap.TRANSPARENT)
+            onCrash(getScaledBitmap().getBlock(pos.x, pos.y));
+        else if(fruitMap.getBlock(pos.x, pos.y) != TextureMap.TRANSPARENT) {
+            onCrash(fruitMap.getBlock(pos.x, pos.y));
 		} else {
-			onCrash(levelMap.getBlock(pos.x, pos.y));
+            move();
 		}
 	}
 

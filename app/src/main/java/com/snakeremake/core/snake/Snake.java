@@ -1,16 +1,16 @@
 package com.snakeremake.core.snake;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.graphics.Color;
+import android.graphics.Point;
+import android.util.Log;
 
 import com.snakeremake.render.ScaledBitmap;
 import com.snakeremake.render.TextureMap;
 import com.snakeremake.utils.Direction;
-import com.snakeremake.utils.ExtraTools;
 import com.snakeremake.views.BaseLevelView;
 
-import android.graphics.Color;
-import android.graphics.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Snake {
 	private List<SnakeBlock> blocks;
@@ -226,7 +226,6 @@ public class Snake {
 		else if(getScaledBitmap().getBlock(pos.x, pos.y) != TextureMap.TRANSPARENT)
             onCrash(getScaledBitmap().getBlock(pos.x, pos.y));
         else if(fruitMap.getBlock(pos.x, pos.y) != TextureMap.TRANSPARENT) {
-            fruitMap.drawToOriginal(pos.x, pos.y, TextureMap.TRANSPARENT);
             onCrash(fruitMap.getBlock(pos.x, pos.y));
 		} else {
             move();
@@ -246,7 +245,7 @@ public class Snake {
 		} else if (Color.green(block) == 255) { // SNAKE
 			hasDied = true;
 		} else if (Color.blue(block) == 255) { // FRUIT (for now)
-			addBlock();
+            addBlock();
 			hasEatenFruit = true;
 		}
 	}

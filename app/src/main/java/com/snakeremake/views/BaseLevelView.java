@@ -201,19 +201,24 @@ public abstract class BaseLevelView extends View {
 
 		snake.moveOnBitmap(this);
 		snakePosition = snake.getPosition();
-		if (spawnFruits && snake.hasEatenFruit()) {
+		if (snake.hasEatenFruit()) {
 			score++;
 
 			// To 'eat' the fruit, we map where the fruit was to transparent
 			fruitScaledBitmap.drawToOriginal(snakePosition.x, snakePosition.y,
 					TextureMap.TRANSPARENT);
 
-			Point pos = ExtraTools.placeRandomFruit(this);
-			mapper.mapBlock(pos.x, pos.y, levelScaledBitmap);
+            // And we render its texture
+            mapper.mapBlock(snakePosition.x, snakePosition.y,
+                    fruitScaledBitmap);
+
+			if(spawnFruits) {
+                Point pos = ExtraTools.placeRandomFruit(this);
+                mapper.mapBlock(pos.x, pos.y, fruitScaledBitmap);
+            }
 		}
 		snake.draw();
 		mapper.mapSnake(snake);
-        mapper.mapSnake(snake, fruitScaledBitmap);
 
 		postInvalidate();
 	}

@@ -264,7 +264,7 @@ public class Snake {
 	}
 
 	public void setScaledBitmap(ScaledBitmap sb) {
-		sb.getOriginalBitmap().eraseColor(TextureMap.FLOOR);
+		sb.getOriginalBitmap().eraseColor(TextureMap.TRANSPARENT);
 		scaledBitmap = sb;
 	}
 }

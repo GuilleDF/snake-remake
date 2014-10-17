@@ -108,24 +108,32 @@ public class TextureMapper {
 	}
 
 	/**
-	 * Maps a <b>snake</b> onto its bitmap
+	 * Maps a the blocks a snake occupies onto the target bitmap specified
 	 * 
-	 * @param snake
+	 * @param snake snake to be used
+     * @param target bitmap where the snake will be mapped to
 	 *
 	 */
-	public void mapSnake(Snake snake) {
+	public void mapSnake(Snake snake, ScaledBitmap target) {
 		for (SnakeBlock block : snake.getBlocks()) {
 
 			mapBlock(block.getCurrentPosition().x,
-					block.getCurrentPosition().y, snake.getScaledBitmap());
+					block.getCurrentPosition().y,target);
 
 			// We make sure to remap after the snake if it has moved
 			if (block.isTail() && block.getLastPosition() != null) {
 				mapBlock(block.getLastPosition().x, block.getLastPosition().y,
-                        snake.getScaledBitmap());
+                        target);
 			}
 		}
 	}
+
+    /**
+     *  Maps a the blocks a snake occupies onto its bitmap
+     *
+     * @param snake snake to be used
+     */
+    public void mapSnake(Snake snake) { mapSnake(snake, snake.getScaledBitmap());}
 
 	/**
 	 * Maps a block from <b>source</b> onto <b>target</b>

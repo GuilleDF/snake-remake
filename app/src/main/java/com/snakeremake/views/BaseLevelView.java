@@ -213,6 +213,8 @@ public abstract class BaseLevelView extends View {
 		}
 		snake.draw();
 		mapper.mapSnake(snake);
+        mapper.mapSnake(snake, fruitScaledBitmap);
+
 		postInvalidate();
 	}
 

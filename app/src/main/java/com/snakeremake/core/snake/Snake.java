@@ -226,6 +226,7 @@ public class Snake {
 		else if(getScaledBitmap().getBlock(pos.x, pos.y) != TextureMap.TRANSPARENT)
             onCrash(getScaledBitmap().getBlock(pos.x, pos.y));
         else if(fruitMap.getBlock(pos.x, pos.y) != TextureMap.TRANSPARENT) {
+            fruitMap.drawToOriginal(pos.x, pos.y, TextureMap.TRANSPARENT);
             onCrash(fruitMap.getBlock(pos.x, pos.y));
 		} else {
             move();

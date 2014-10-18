@@ -10,6 +10,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +22,7 @@ import com.snakeremake.activity.BaseLevelActivity;
 import com.snakeremake.core.snake.Snake;
 import com.snakeremake.main.Game;
 import com.snakeremake.render.ScaledBitmap;
+import com.snakeremake.render.TextureMap;
 import com.snakeremake.render.TextureMapper;
 import com.snakeremake.utils.Direction;
 import com.snakeremake.utils.ExtraTools;
@@ -26,12 +30,13 @@ import com.snakeremake.utils.GestureProcessor;
 
 public abstract class BaseLevelView extends View {
 
-	protected ScaledBitmap levelScaledBitmap;
+	public ScaledBitmap levelScaledBitmap;
+    public ScaledBitmap fruitScaledBitmap;
+    public Snake snake;
 
 	// ---------------------------------------//
 
 	private Point screenSize;
-	private Snake snake;
 
 	private GestureDetector gestureDetector;
 
@@ -76,15 +81,18 @@ public abstract class BaseLevelView extends View {
 
 	private void drawMap(Canvas canvas) {
 		updateVisibleArea();
-		Bitmap bitmapToDraw = visibleBitmap();
-		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-			canvas.drawBitmap(bitmapToDraw, 0,
-					(screenSize.y - bitmapToDraw.getHeight()) / 2, paint);
-		} else {
-			canvas.drawBitmap(bitmapToDraw,
-					(screenSize.x - bitmapToDraw.getWidth()) / 2, 0, paint);
+        Bitmap [] bitmapsToDraw = {visibleLevelBitmap(), visibleFruitBitmap(),
+                snake.getScaledBitmap().getScaledBitmap()};
+        for(Bitmap bitmap: bitmapsToDraw) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                canvas.drawBitmap(bitmap, 0,
+                        (screenSize.y - bitmap.getHeight()) / 2, paint);
+            } else {
+                canvas.drawBitmap(bitmap,
+                        (screenSize.x - bitmap.getWidth()) / 2, 0, paint);
 
-		}
+            }
+        }
 	}
 
 	private void generateSnake() {
@@ -111,6 +119,11 @@ public abstract class BaseLevelView extends View {
 		background = BitmapFactory.decodeResource(getResources(),
 				levelResourceId, options);
 		levelScaledBitmap = new ScaledBitmap(background);
+        fruitScaledBitmap = new ScaledBitmap(
+                Bitmap.createBitmap(background.getWidth(),
+                        background.getHeight(), Config.ARGB_8888)
+        );
+        fruitScaledBitmap.getOriginalBitmap().eraseColor(TextureMap.TRANSPARENT);
 
 	}
 
@@ -118,6 +131,7 @@ public abstract class BaseLevelView extends View {
 		mapper = new TextureMapper(getResources());
 		mapper.loadTextures();
 		mapper.mapBitmap(levelScaledBitmap);
+        mapper.mapBitmap(fruitScaledBitmap);
 	}
 
 	protected void onCreate() {
@@ -131,15 +145,16 @@ public abstract class BaseLevelView extends View {
 				new GestureProcessor(snake, this));
 
 		if (spawnFruits) {
-			ExtraTools.placeRandomFruit(levelScaledBitmap);
-			ExtraTools.placeRandomFruit(levelScaledBitmap);
+			ExtraTools.placeRandomFruit(this);
+			ExtraTools.placeRandomFruit(this);
 		}
 
 		paint = new Paint();
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
 		pause = BitmapFactory.decodeResource(getResources(), R.drawable.pause);
 
 		mapTextures();
-        Game.inst().getClock().setView(this);
+        Game.clock.setView(this);
 	}
 
 	@Override
@@ -161,18 +176,17 @@ public abstract class BaseLevelView extends View {
 	}
 
 	public void onLose() {
-		Game.inst().getClock().stopClock();
+		Game.clock.stopClock();
 		BaseLevelActivity host = (BaseLevelActivity) getContext();
 		host.onGameOver(score);
-
-    }
+	}
 
 	public void onPauseButtonPressed() {
 		paused = !paused;
 		if (paused) {
-			Game.inst().getClock().pauseClock();
+			Game.clock.pauseClock();
 		} else {
-			Game.inst().getClock().resumeClock();
+			Game.clock.resumeClock();
 		}
 
 	}
@@ -182,23 +196,30 @@ public abstract class BaseLevelView extends View {
 	 */
 	public void onTick() {
         tickCount++;
-        if(tickCount != (int)Game.inst.getClock().getTicksPerSecond()/speed - 1) return;
+        if(tickCount != (int)Game.clock.getTicksPerSecond()/speed - 1) return;
         tickCount=0;
 
-		snake.moveOnBitmap(levelScaledBitmap);
+		snake.moveOnBitmap(this);
 		snakePosition = snake.getPosition();
-		if (spawnFruits && snake.hasEatenFruit()) {
+		if (snake.hasEatenFruit()) {
 			score++;
 
-			// To 'eat' the fruit, we map where the fruit was to white
-			levelScaledBitmap.drawToOriginal(snakePosition.x, snakePosition.y,
-					Color.WHITE);
+			// To 'eat' the fruit, we map where the fruit was to transparent
+			fruitScaledBitmap.drawToOriginal(snakePosition.x, snakePosition.y,
+					TextureMap.TRANSPARENT);
 
-			Point pos = ExtraTools.placeRandomFruit(levelScaledBitmap);
-			mapper.mapBlock(pos.x, pos.y, levelScaledBitmap);
+            // And we render its texture
+            mapper.mapBlock(snakePosition.x, snakePosition.y,
+                    fruitScaledBitmap);
+
+			if(spawnFruits) {
+                Point pos = ExtraTools.placeRandomFruit(this);
+                mapper.mapBlock(pos.x, pos.y, fruitScaledBitmap);
+            }
 		}
 		snake.draw();
-		mapper.mapSnake(snake, levelScaledBitmap);
+		mapper.mapSnake(snake);
+
 		postInvalidate();
 	}
 
@@ -217,18 +238,22 @@ public abstract class BaseLevelView extends View {
 			int desiredWidth = screenSize.x * levelScaledBitmap.numBlocksX()
 					/ visibleBlocksX();
 			levelScaledBitmap.scaleByWidth(desiredWidth);
+            fruitScaledBitmap.scaleByWidth(desiredWidth);
 			snake.getScaledBitmap().scaleByWidth(desiredWidth);
 		} else {
 			int desiredHeight = screenSize.y * levelScaledBitmap.numBlocksY()
 					/ visibleBlocksY();
 			levelScaledBitmap.scaleByHeight(desiredHeight);
+            fruitScaledBitmap.scaleByHeight(desiredHeight);
 			snake.getScaledBitmap().scaleByHeight(desiredHeight);
 		}
 	}
 
 	protected abstract void updateVisibleArea();
 
-	protected abstract Bitmap visibleBitmap();
+	protected abstract Bitmap visibleLevelBitmap();
+
+    protected abstract Bitmap visibleFruitBitmap();
 
 	protected abstract int visibleBlocksX();
 

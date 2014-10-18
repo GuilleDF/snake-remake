@@ -8,7 +8,8 @@ import android.graphics.Point;
 
 public class ScrollingLevelView extends BaseLevelView {
 
-	private Bitmap visibleBitmap;
+	private Bitmap visibleLevelBitmap;
+    private Bitmap visibleFruitBitmap;
 	private Point visibleBlocks;
 	private Point visibleAreaPosition;
 	private final int scrollDistance = 5;
@@ -37,9 +38,14 @@ public class ScrollingLevelView extends BaseLevelView {
 	}
 
 	@Override
-	protected Bitmap visibleBitmap() {
-		return visibleBitmap;
+	protected Bitmap visibleLevelBitmap() {
+		return visibleLevelBitmap;
 	}
+
+    @Override
+    protected Bitmap visibleFruitBitmap() {
+        return visibleFruitBitmap;
+    }
 
 	/**
 	 * If the snake is at {@link #scrollDistance} from the edge and we haven't
@@ -89,10 +95,13 @@ public class ScrollingLevelView extends BaseLevelView {
 		int numPixelsY = numBlocks.y * levelScaledBitmap.getHeight()
 				/ levelScaledBitmap.numBlocksY();
 
-		// Then we make the visible area bitmap
-		visibleBitmap = Bitmap.createBitmap(
+		// Then we make the visible area bitmaps
+		visibleLevelBitmap = Bitmap.createBitmap(
 				levelScaledBitmap.getScaledBitmap(), originPixelsX,
 				originPixelsY, numPixelsX, numPixelsY);
+        visibleFruitBitmap = Bitmap.createBitmap(
+                fruitScaledBitmap.getScaledBitmap(), originPixelsX,
+                originPixelsY, numPixelsX, numPixelsY);
 
 		// We update the position and blocks fields
 		visibleAreaPosition = new Point(origin);

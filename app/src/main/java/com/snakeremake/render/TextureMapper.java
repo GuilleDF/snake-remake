@@ -3,10 +3,12 @@ package com.snakeremake.render;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 
 import com.snakeremake.R;
 import com.snakeremake.core.snake.Snake;
 import com.snakeremake.core.snake.SnakeBlock;
+import com.snakeremake.utils.ExtraTools;
 
 /**
  * Assigns a {@link android.graphics.Bitmap} to a color (specified in {@link com.snakeremake.render.TextureMap}) <br>
@@ -42,6 +44,8 @@ public class TextureMapper {
 	private Bitmap snakeBendDL;
 	private Bitmap snakeBendUR;
 	private Bitmap snakeBendUL;
+
+    private Bitmap transparent;
 
 	public TextureMapper(Resources res) {
 		resources = res;
@@ -84,6 +88,10 @@ public class TextureMapper {
 				R.drawable.snake_bend_ur);
 		snakeBendUL = BitmapFactory.decodeResource(resources,
 				R.drawable.snake_bend_ul);
+
+        transparent = Bitmap.createBitmap(20,20, Bitmap.Config.ARGB_8888);
+        transparent.setHasAlpha(true);
+        transparent.eraseColor(Color.TRANSPARENT);
 	}
 
 	/**
@@ -99,27 +107,21 @@ public class TextureMapper {
 		}
 	}
 
-	/**
-	 * Maps a <b>snake</b> onto a <b>bitmap</b>
-	 * 
-	 * @param snake
-	 * @param bitmap
-	 */
-	public void mapSnake(Snake snake, ScaledBitmap bitmap) {
+    /**
+     *  Maps a the blocks a snake occupies onto its bitmap
+     *
+     * @param snake snake to be used
+     */
+	public void mapSnake(Snake snake) {
 		for (SnakeBlock block : snake.getBlocks()) {
 
-			// First we make sure the floor is mapped properly
 			mapBlock(block.getCurrentPosition().x,
-					block.getCurrentPosition().y, bitmap);
+					block.getCurrentPosition().y,snake.getScaledBitmap());
 
-			// Then we map the snake
-			mapBlock(block.getCurrentPosition().x,
-					block.getCurrentPosition().y, snake.getScaledBitmap(), bitmap);
-
-			// We also make sure to remap the floor after the snake has passed it
+			// We make sure to remap after the snake if it has moved
 			if (block.isTail() && block.getLastPosition() != null) {
 				mapBlock(block.getLastPosition().x, block.getLastPosition().y,
-						bitmap);
+                        snake.getScaledBitmap());
 			}
 		}
 	}
@@ -172,6 +174,8 @@ public class TextureMapper {
 			target.drawBlock(x, y, wall);
 		else if (color == TextureMap.FRUIT)
 			target.drawBlock(x, y, fruit);
+        else if (color == TextureMap.TRANSPARENT)
+            target.drawBlock(x, y, transparent);
 	}
 
 	/**

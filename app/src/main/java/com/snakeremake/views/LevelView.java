@@ -23,8 +23,6 @@ import com.snakeremake.utils.GestureProcessor;
 
 public class LevelView extends View {
 
-    public Snake snake;
-
 	// ---------------------------------------//
 
 
@@ -41,11 +39,11 @@ public class LevelView extends View {
 
     protected Level level;
 
-	public LevelView(Context context, boolean spawnFruits) {
+	public LevelView(Context context, boolean spawnFruits, Level level) {
 		super(context);
 		this.spawnFruits = spawnFruits;
-
-		// call onCreate(); when extending this class
+        this.level = level;
+        onCreate();
 	}
 
 
@@ -58,7 +56,7 @@ public class LevelView extends View {
 	private void drawMap(Canvas canvas) {
 		level.updateVisibleArea();
         Bitmap [] bitmapsToDraw = {level.visibleLevelBitmap(), level.visibleFruitBitmap(),
-                snake.getScaledBitmap().getScaledBitmap()};
+                level.getSnake().getScaledBitmap().getScaledBitmap()};
         for(Bitmap bitmap: bitmapsToDraw) {
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 canvas.drawBitmap(bitmap, 0,
@@ -73,6 +71,7 @@ public class LevelView extends View {
 
 
 	protected void onCreate() {
+        level.setView(this);
 		level.setPaused(false);
 		level.setScore(0);
 		level.loadMap();
@@ -80,7 +79,7 @@ public class LevelView extends View {
         level.scaleMap();
 
 		gestureDetector = new GestureDetector(getContext(),
-				new GestureProcessor(snake, level));
+				new GestureProcessor(level));
 
 		if (spawnFruits) {
 			ExtraTools.placeRandomFruit(level);
@@ -108,7 +107,7 @@ public class LevelView extends View {
 			level.scaleMap();
 			level.mapTextures();
 		}
-		if (snake.hasDied())
+		if (level.getSnake().hasDied())
 			level.onLose();
 
 		drawMap(canvas);

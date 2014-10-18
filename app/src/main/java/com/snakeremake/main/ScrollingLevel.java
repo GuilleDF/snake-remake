@@ -27,9 +27,7 @@ public class ScrollingLevel extends Level {
 
 	@Override
 	public LevelView getView(Context ctx) {
-        view = new LevelView(ctx, spawnFruits);
-        view.setLevel(this);
-
+        view = new LevelView(ctx, spawnFruits, this);
         setVisibleArea(visibleAreaPosition, visibleBlocks);
 
         return view;

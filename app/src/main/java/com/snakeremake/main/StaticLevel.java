@@ -15,11 +15,8 @@ public class StaticLevel extends Level {
 
 	@Override
 	public LevelView getView(Context ctx) {
-        view = new LevelView(ctx, spawnFruits);
-		view.setLevel(this);
-
+        view = new LevelView(ctx, spawnFruits, this);
 		return view;
-
 	}
 
 

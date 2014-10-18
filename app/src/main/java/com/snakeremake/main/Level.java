@@ -169,7 +169,7 @@ public abstract class Level {
         options.inDither = false;
         options.inScaled = false;
         background = BitmapFactory.decodeResource(view.getResources(),
-                levelID, options);
+                levelResourceID, options);
 
         maps[0] = new ScaledBitmap(background);
 
@@ -319,5 +319,13 @@ public abstract class Level {
 
     public boolean isPaused() {
         return paused;
+    }
+
+    public void setView(LevelView view) {
+        this.view = view;
+    }
+
+    public Snake getSnake() {
+        return snake;
     }
 }

@@ -11,8 +11,8 @@ public class GestureProcessor implements OnGestureListener {
 	private Snake snake;
 	private Level level;
 
-	public GestureProcessor(Snake snake, Level level) {
-		this.snake = snake;
+	public GestureProcessor( Level level) {
+		this.snake = level.getSnake();
 		this.level = level;
 	}
 

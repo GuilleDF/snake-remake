@@ -23,13 +23,14 @@ public class ScrollingLevel extends Level {
 		this.visibleAreaPosition = visibleAreaPosition;
 		this.visibleBlocks = visibleBlocks;
 
-        setVisibleArea(visibleAreaPosition, visibleBlocks);
 	}
 
 	@Override
 	public LevelView getView(Context ctx) {
         view = new LevelView(ctx, spawnFruits);
         view.setLevel(this);
+
+        setVisibleArea(visibleAreaPosition, visibleBlocks);
 
         return view;
 	}

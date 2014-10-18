@@ -79,7 +79,7 @@ public abstract class Level {
 						visibleBlocks);
 			}
 		} catch (Exception e) {
-			Log.e("Snake-Remake", "Unexpected error");
+			Log.e("Snake-Remake", "Exception in loadLevel(): " + e.toString());
 		}
 		return null;
 	}

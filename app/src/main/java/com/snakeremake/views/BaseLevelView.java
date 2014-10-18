@@ -10,12 +10,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Point;
-<<<<<<< HEAD
-=======
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.util.Log;
->>>>>>> remotes/origin/master
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;

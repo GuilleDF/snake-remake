@@ -1,7 +1,7 @@
 package com.snakeremake.activity;
 
 import com.snakeremake.main.Game;
-import com.snakeremake.views.BaseLevelView;
+import com.snakeremake.views.LevelView;
 import com.snakeremake.views.GameOverView;
 
 import android.app.Activity;
@@ -18,9 +18,9 @@ import android.view.WindowManager;
  */
 
 
-public class BaseLevelActivity extends Activity {
+public class LevelActivity extends Activity {
 
-	private BaseLevelView levelView;
+	private LevelView levelView;
 	private GameOverView gameOverView;
 
 	@Override
@@ -43,8 +43,8 @@ public class BaseLevelActivity extends Activity {
 
 	}
 
-	protected BaseLevelView setLevelView(){
-		return Game.getLevel().getView(this);
+	protected LevelView setLevelView(){
+		return Game.inst().getLevel().getView(this);
 	}
 
 	public void onGameOver(int score) {

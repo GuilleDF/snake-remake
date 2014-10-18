@@ -24,7 +24,7 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.snakeremake.activity.BaseLevelActivity"
+            android:name=".activity.LevelActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
         </activity>

@@ -12,7 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.snakeremake.R;
-import com.snakeremake.activity.BaseLevelActivity;
+import com.snakeremake.activity.LevelActivity;
 import com.snakeremake.utils.ExtraTools;
 
 public class GameOverView extends View {
@@ -42,7 +42,7 @@ public class GameOverView extends View {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent e){
-		BaseLevelActivity host = (BaseLevelActivity) getContext();
+		LevelActivity host = (LevelActivity) getContext();
 		host.restartGame();
 		return true;
 	}

@@ -2,12 +2,12 @@ package com.snakeremake.core.snake;
 
 import android.graphics.Color;
 import android.graphics.Point;
-import android.util.Log;
 
+import com.snakeremake.main.Level;
 import com.snakeremake.render.ScaledBitmap;
 import com.snakeremake.render.TextureMap;
 import com.snakeremake.utils.Direction;
-import com.snakeremake.views.BaseLevelView;
+import com.snakeremake.views.LevelView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -212,12 +212,12 @@ public class Snake {
 	/**
 	 * Does the same as {@link #move()}, but checks for collisions
 	 * 
-	 * @param view
-     *             The BaseLevelView to use for collision checking
+	 * @param level
+     *             The Level to use for collision checking
 	 */
-	public void moveOnBitmap(BaseLevelView view) {
-        ScaledBitmap levelMap = view.levelScaledBitmap;
-        ScaledBitmap fruitMap = view.fruitScaledBitmap;
+	public void moveOnLevel(Level level) {
+        ScaledBitmap levelMap = level.getMaps(0);
+        ScaledBitmap fruitMap = level.getMaps(1);
 		SnakeBlock inFront = new SnakeBlock(position.x, position.y);
 		inFront.move(direction);
 		Point pos = inFront.getCurrentPosition();

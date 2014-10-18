@@ -1,10 +1,10 @@
 package com.snakeremake.main;
 
-import android.util.Log;
-
-import com.snakeremake.views.BaseLevelView;
+import com.snakeremake.views.LevelView;
 
 public class Clock extends Thread {
+
+    private Level level;
 
     public double getTicksPerSecond() {
         return ticksPerSecond;
@@ -14,8 +14,6 @@ public class Clock extends Thread {
 	private boolean running;
 	private boolean stopped;
 	private double realTPS = 0;
-
-    private BaseLevelView view;
 
 	public Clock(double ticksPerSecond) {
 		super();
@@ -58,13 +56,13 @@ public class Clock extends Thread {
 	}
 
 	private void tick() {
-		if(view != null) view.onTick();
+		if(level != null) level.onTick();
 	}
 
 	public double getRealTPS() {
 		return realTPS;
 	}
 
-    public void setView(BaseLevelView view) { this.view = view; }
+    public void setLevel(Level level) { this.level = level; }
 
 }

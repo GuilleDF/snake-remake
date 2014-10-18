@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.snakeremake.activity.BaseLevelActivity;
 import com.snakeremake.activity.MenuActivity;
 
 public class ActionEnterMenu implements Action, Serializable {

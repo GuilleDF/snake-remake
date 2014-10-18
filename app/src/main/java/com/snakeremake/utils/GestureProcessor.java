@@ -1,24 +1,25 @@
 package com.snakeremake.utils;
 
 import com.snakeremake.core.snake.Snake;
-import com.snakeremake.views.BaseLevelView;
+import com.snakeremake.main.Level;
+import com.snakeremake.views.LevelView;
 
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 
 public class GestureProcessor implements OnGestureListener {
 	private Snake snake;
-	private BaseLevelView view;
+	private Level level;
 
-	public GestureProcessor(Snake snake, BaseLevelView baseLevelView) {
+	public GestureProcessor(Snake snake, Level level) {
 		this.snake = snake;
-		this.view = baseLevelView;
+		this.level = level;
 	}
 
 	@Override
 	public boolean onDown(MotionEvent e) {
 		if (e.getRawX() < 500 && e.getRawY() < 500)
-			view.onPauseButtonPressed();
+			level.onPauseButtonPressed();
 		return true;
 	}
 
@@ -37,7 +38,7 @@ public class GestureProcessor implements OnGestureListener {
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
-		if (view.isPaused())
+		if (level.isPaused())
 			return true;
 
 		Direction direction = snake.getDirection();

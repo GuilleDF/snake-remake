@@ -1,14 +1,16 @@
 package com.snakeremake.core.snake;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.graphics.Color;
+import android.graphics.Point;
+import android.util.Log;
 
 import com.snakeremake.render.ScaledBitmap;
 import com.snakeremake.render.TextureMap;
 import com.snakeremake.utils.Direction;
+import com.snakeremake.views.BaseLevelView;
 
-import android.graphics.Color;
-import android.graphics.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Snake {
 	private List<SnakeBlock> blocks;
@@ -210,18 +212,23 @@ public class Snake {
 	/**
 	 * Does the same as {@link #move()}, but checks for collisions
 	 * 
-	 * @param bitmap
-	 *            The bitmap to use for collision checking
+	 * @param view
+     *             The BaseLevelView to use for collision checking
 	 */
-	public void moveOnBitmap(ScaledBitmap bitmap) {
+	public void moveOnBitmap(BaseLevelView view) {
+        ScaledBitmap levelMap = view.levelScaledBitmap;
+        ScaledBitmap fruitMap = view.fruitScaledBitmap;
 		SnakeBlock inFront = new SnakeBlock(position.x, position.y);
 		inFront.move(direction);
 		Point pos = inFront.getCurrentPosition();
-		if (bitmap.getBlock(pos.x, pos.y) == TextureMap.FLOOR
-				&& getScaledBitmap().getBlock(pos.x, pos.y) == TextureMap.FLOOR) {
-			move();
+		if (levelMap.getBlock(pos.x, pos.y) != TextureMap.FLOOR)
+            onCrash(levelMap.getBlock(pos.x, pos.y));
+		else if(getScaledBitmap().getBlock(pos.x, pos.y) != TextureMap.TRANSPARENT)
+            onCrash(getScaledBitmap().getBlock(pos.x, pos.y));
+        else if(fruitMap.getBlock(pos.x, pos.y) != TextureMap.TRANSPARENT) {
+            onCrash(fruitMap.getBlock(pos.x, pos.y));
 		} else {
-			onCrash(bitmap.getBlock(pos.x, pos.y));
+            move();
 		}
 	}
 
@@ -238,7 +245,7 @@ public class Snake {
 		} else if (Color.green(block) == 255) { // SNAKE
 			hasDied = true;
 		} else if (Color.blue(block) == 255) { // FRUIT (for now)
-			addBlock();
+            addBlock();
 			hasEatenFruit = true;
 		}
 	}
@@ -260,7 +267,7 @@ public class Snake {
 	}
 
 	public void setScaledBitmap(ScaledBitmap sb) {
-		sb.getOriginalBitmap().eraseColor(TextureMap.FLOOR);
+		sb.getOriginalBitmap().eraseColor(TextureMap.TRANSPARENT);
 		scaledBitmap = sb;
 	}
 }

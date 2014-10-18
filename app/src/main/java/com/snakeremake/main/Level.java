@@ -101,11 +101,7 @@ public abstract class Level {
 		this.spawnFruits = spawnFruits;
 		this.levelResourceID = levelResourceID;
 	}
-	//Muy raro lo del cast...
-	//Voy a debugear
-	//La ultima vez que hiciste uno de esos recoveries me petaste el workspace :P
-	// es que me daba un error en una clase jajaja
-	// que no se habia sincronizado bien
+
 	public abstract BaseLevelView getView(Context context);
 
 	public static HashMap<String,Action> generateHashMap() {

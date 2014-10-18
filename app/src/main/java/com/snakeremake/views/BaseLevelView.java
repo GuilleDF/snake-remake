@@ -70,15 +70,19 @@ public abstract class BaseLevelView extends View {
 		// call onCreate(); when extending this class
 	}
 
+    /**
+     * Calculates screensize and orientation
+     */
 	protected void configureScreen() {
 		screenSize = ExtraTools.getScreenSize(getContext());
 		orientation = getResources().getConfiguration().orientation;
 	}
 
-	protected Point currentPosition() {
-		return snakePosition;
-	}
-
+    /**
+     * Draws every bitmap onto a canvas.<br>
+     *     It calls {@link #updateVisibleArea()} first
+     * @param canvas canvas to draw on
+     */
 	private void drawMap(Canvas canvas) {
 		updateVisibleArea();
         Bitmap [] bitmapsToDraw = {visibleLevelBitmap(), visibleFruitBitmap(),
@@ -95,6 +99,9 @@ public abstract class BaseLevelView extends View {
         }
 	}
 
+    /**
+     * Creates the snake and gives it the desired length
+     */
 	private void generateSnake() {
         snake = new Snake(snakePosition.x, snakePosition.y);
 
@@ -108,10 +115,9 @@ public abstract class BaseLevelView extends View {
 		}
 	}
 
-	public boolean isPaused() {
-		return paused;
-	}
-
+    /**
+     * Loads the map and creates the fruitmap
+     */
 	private void loadMap() {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inDither = false;
@@ -127,12 +133,38 @@ public abstract class BaseLevelView extends View {
 
 	}
 
+    /**
+     * Map has to be loaded and snake has to be generated
+     * This should throw exceptions in the future
+     */
+	protected void scaleMap() {
+		configureScreen();
+		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+			int desiredWidth = screenSize.x * levelScaledBitmap.numBlocksX()
+					/ visibleBlocksX();
+			levelScaledBitmap.scaleByWidth(desiredWidth);
+            fruitScaledBitmap.scaleByWidth(desiredWidth);
+			snake.getScaledBitmap().scaleByWidth(desiredWidth);
+		} else {
+			int desiredHeight = screenSize.y * levelScaledBitmap.numBlocksY()
+					/ visibleBlocksY();
+			levelScaledBitmap.scaleByHeight(desiredHeight);
+            fruitScaledBitmap.scaleByHeight(desiredHeight);
+			snake.getScaledBitmap().scaleByHeight(desiredHeight);
+		}
+	}
+
+    /**
+     * Gives the fruitmap and levelmap the appropiate textures
+     */
 	private void mapTextures() {
 		mapper = new TextureMapper(getResources());
 		mapper.loadTextures();
 		mapper.mapBitmap(levelScaledBitmap);
         mapper.mapBitmap(fruitScaledBitmap);
 	}
+
+
 
 	protected void onCreate() {
 		paused = false;
@@ -228,25 +260,15 @@ public abstract class BaseLevelView extends View {
 		return gestureDetector.onTouchEvent(e);
 	}
 
-    /**
-     * Map has to be loaded and snake has to be generated
-     * This should throw exceptions in the future
-     */
-	protected void scaleMap() {
-		configureScreen();
-		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-			int desiredWidth = screenSize.x * levelScaledBitmap.numBlocksX()
-					/ visibleBlocksX();
-			levelScaledBitmap.scaleByWidth(desiredWidth);
-            fruitScaledBitmap.scaleByWidth(desiredWidth);
-			snake.getScaledBitmap().scaleByWidth(desiredWidth);
-		} else {
-			int desiredHeight = screenSize.y * levelScaledBitmap.numBlocksY()
-					/ visibleBlocksY();
-			levelScaledBitmap.scaleByHeight(desiredHeight);
-            fruitScaledBitmap.scaleByHeight(desiredHeight);
-			snake.getScaledBitmap().scaleByHeight(desiredHeight);
-		}
+
+
+
+	public boolean isPaused() {
+		return paused;
+	}
+
+	protected Point currentPosition() {
+		return snakePosition;
 	}
 
 	protected abstract void updateVisibleArea();

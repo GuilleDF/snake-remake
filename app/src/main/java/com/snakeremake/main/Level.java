@@ -9,7 +9,6 @@ import android.graphics.Point;
 import android.util.Log;
 
 import com.snakeremake.R;
-import com.snakeremake.activity.LevelActivity;
 import com.snakeremake.core.snake.Snake;
 import com.snakeremake.menu.Action;
 import com.snakeremake.menu.ActionGame;
@@ -114,7 +113,9 @@ public abstract class Level {
 		this.levelResourceID = levelResourceID;
 	}
 
+
 	public abstract LevelView getView(Context context);
+
 
 	public static HashMap<String,Action> generateHashMap() {
 		HashMap<String, Action> map = new HashMap<String,Action>();
@@ -227,8 +228,7 @@ public abstract class Level {
 
     public void onLose() {
         Game.inst().clock.stopClock();
-        LevelActivity host = (LevelActivity) view.getContext();
-        host.onGameOver(score);
+        view.getHostActivity().onGameOver(score);
     }
 
     public void onPauseButtonPressed() {

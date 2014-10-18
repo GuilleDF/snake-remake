@@ -31,6 +31,9 @@ public class Game {
 	
 	public Level getLevel() {
 		return level;
+
 	}
+
+    public Clock getClock() {return clock;}
 
 }

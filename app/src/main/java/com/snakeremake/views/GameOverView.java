@@ -38,7 +38,7 @@ public class GameOverView extends View {
 		canvas.drawRGB(0, 0, 0);
 		canvas.drawText(gameOver, screenSize.x/2, screenSize.y/2, paint);
 		canvas.drawText("Score: " + score, screenSize.x/2, screenSize.y*3/4, paint);
-	}
+    }
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent e){

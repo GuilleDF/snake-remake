@@ -1,5 +1,6 @@
 package com.snakeremake.activity;
 
+
 import com.snakeremake.main.Game;
 import com.snakeremake.views.LevelView;
 import com.snakeremake.views.GameOverView;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.google.android.gms.games.Games;
+import com.snakeremake.R;
 /**
  * Extend this class and override {@link #setLevelView()} to return
  * the desired level
@@ -51,7 +54,11 @@ public class LevelActivity extends Activity {
 		gameOverView.setScore(score);
 		setContentView(gameOverView);
 		gameOverView.requestFocus();
-	}
+        if(BaseActivity.isLoggedIn()){
+                String id = getString(R.string.leaderboard_points);
+                Games.Leaderboards.submitScore(BaseActivity.googleApiClient, id, score);
+        }
+    }
 
 	public void restartGame() {
 		// Closes this activity, falling back to it's parent

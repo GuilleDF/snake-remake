@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.snakeremake.R;
+import com.snakeremake.activity.LevelActivity;
 import com.snakeremake.core.snake.Snake;
 import com.snakeremake.main.Game;
 import com.snakeremake.main.Level;
@@ -39,10 +40,19 @@ public class LevelView extends View {
 
     protected Level level;
 
+    public LevelActivity getHostActivity() {
+        return hostActivity;
+    }
+
+    private LevelActivity hostActivity;
+
 	public LevelView(Context context, boolean spawnFruits, Level level) {
 		super(context);
 		this.spawnFruits = spawnFruits;
         this.level = level;
+
+        hostActivity = (LevelActivity) context;
+
         onCreate();
 	}
 

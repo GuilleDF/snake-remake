@@ -12,7 +12,6 @@ import android.graphics.Paint.Align;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -154,7 +153,7 @@ public abstract class BaseLevelView extends View {
 		pause = BitmapFactory.decodeResource(getResources(), R.drawable.pause);
 
 		mapTextures();
-        Game.clock.setView(this);
+        Game.inst().getClock().setView(this);
 	}
 
 	@Override
@@ -176,17 +175,18 @@ public abstract class BaseLevelView extends View {
 	}
 
 	public void onLose() {
-		Game.clock.stopClock();
+		Game.inst().getClock().stopClock();
 		BaseLevelActivity host = (BaseLevelActivity) getContext();
 		host.onGameOver(score);
-	}
+
+    }
 
 	public void onPauseButtonPressed() {
 		paused = !paused;
 		if (paused) {
-			Game.clock.pauseClock();
+			Game.inst().getClock().pauseClock();
 		} else {
-			Game.clock.resumeClock();
+			Game.inst().getClock().resumeClock();
 		}
 
 	}
@@ -196,7 +196,7 @@ public abstract class BaseLevelView extends View {
 	 */
 	public void onTick() {
         tickCount++;
-        if(tickCount != (int)Game.clock.getTicksPerSecond()/speed - 1) return;
+        if(tickCount != (int)Game.inst.getClock().getTicksPerSecond()/speed - 1) return;
         tickCount=0;
 
 		snake.moveOnBitmap(this);

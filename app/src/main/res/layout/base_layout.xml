@@ -5,6 +5,13 @@
     android:layout_height="match_parent"
     android:weightSum="1">
     <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/test_button"
+        android:text="Test conn"
+        android:visibility="gone"
+        android:onClick="onClick"/>
+    <Button
         android:id="@+id/sign_out_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

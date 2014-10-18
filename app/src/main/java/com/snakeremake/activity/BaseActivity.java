@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.plus.Plus;
 import com.snakeremake.R;
 import com.snakeremake.basegame.BaseGameActivity;
 import com.snakeremake.main.Level;
@@ -28,28 +26,22 @@ public class BaseActivity  extends BaseGameActivity {
     public static GoogleApiClient googleApiClient;
     private static int loggedIn = -1;
 
-    private GoogleApiClient mGoogleApiClient;
-    private boolean mExplicitSignOut = false;
+    public static boolean mExplicitSignOut;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        /*getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         setContentView(R.layout.base_layout);
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
-                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
-                .build();
         enableDebugLog(true);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(!mExplicitSignOut)mGoogleApiClient.connect();
-        Log.i("Snake-Remake","Connecting.");
+        if(!mExplicitSignOut)start();
     }
 
     @Override
@@ -58,21 +50,20 @@ public class BaseActivity  extends BaseGameActivity {
     }
 
     public void start(){
-        if(mGoogleApiClient.isConnected()){
+        if(isLoggedIn()){
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
             TextView textview = (TextView) findViewById(R.id.textSignedIn);
             try{
-                textview.setText("Logged in as "+Games.getCurrentAccountName(mGoogleApiClient));
-                BaseActivity.googleApiClient = mGoogleApiClient;
+                textview.setText("Logged in as "+Games.getCurrentAccountName(googleApiClient));
             }catch(Exception ex){}
         }
     }
 
     @Override
     public void onSignInFailed() {
-        Log.i("Snake-Remake","Sign in failed.");
-        start();
+        Log.i("Snake-Remake", "Sign in failed.");
+        loggedIn=1;
     }
 
     @Override
@@ -82,9 +73,13 @@ public class BaseActivity  extends BaseGameActivity {
     }
 
     public void onClick (View view) {
+        if( view.getId() == R.id.test_button){
+            Log.i("Snake-Remake",isLoggedIn()+"");
+        }
         if (view.getId() == R.id.sign_in_button) {
             beginUserInitiatedSignIn();
             start();
+            loggedIn=0;
         } else if (view.getId() == R.id.sign_out_button) {
             signOut();
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
@@ -92,6 +87,7 @@ public class BaseActivity  extends BaseGameActivity {
             TextView textview = (TextView) findViewById(R.id.textSignedIn);
             textview.setText("You are not logged in.");
             mExplicitSignOut = true;
+            loggedIn=1;
         } else if(view.getId() == R.id.start_button) {
             Intent in = new Intent(this,MenuActivity.class);
             HashMap<String, Action> map = new HashMap<String, Action>();
@@ -106,13 +102,14 @@ public class BaseActivity  extends BaseGameActivity {
     }
 
     public static boolean isLoggedIn(){
-        if(loggedIn == -1){
+
             try{
-                loggedIn = ( Games.getCurrentAccountName(googleApiClient)!=null) ? 0 : 1;
+                String s = Games.getCurrentAccountName(googleApiClient);
+                loggedIn = (s!=null) ? 0 : 1;
             }catch(Exception ex){
                 loggedIn = 1;
             }
-        }
+
         return loggedIn==0;
     }
 }

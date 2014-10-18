@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.plus.Plus;
 import com.snakeremake.main.Level;
 import com.snakeremake.views.SplashView;
 
@@ -17,6 +20,10 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        BaseActivity.googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                .build();
 	}
 
     @Override
@@ -24,7 +31,23 @@ public class SplashActivity extends Activity {
         SplashView splash = new SplashView(this);
         setContentView(splash);
         super.onStart();
-        start();
+        if(!BaseActivity.mExplicitSignOut){BaseActivity.googleApiClient.connect();}
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    for(int i = 0; i<=5;i++){
+                        if(BaseActivity.isLoggedIn()){
+                            start();
+                            break;
+                        }
+                        Thread.sleep(200);
+                    }
+                    start();
+                } catch (InterruptedException e) {}
+            }
+        });
+        t.start();
     }
 
     private void start(){

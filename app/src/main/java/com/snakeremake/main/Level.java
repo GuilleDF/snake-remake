@@ -133,6 +133,7 @@ public abstract class Level {
      * Stores the level, fruit and snake bitmaps, in that order
      */
     private ScaledBitmap[] maps = new ScaledBitmap[3]; //0 is level, 1 is fruits, 2 is snake
+    protected Bitmap[] visibleBitmaps = new Bitmap[3]; //Same as above
     private Point screenSize;
     private int orientation;
     private TextureMapper mapper;
@@ -298,8 +299,8 @@ public abstract class Level {
         return screenSize;
     }
 
-    public ScaledBitmap getMaps(int i) {
-        return maps[i];
+    public ScaledBitmap[] getMaps() {
+        return maps;
     }
 
     public Point currentPosition() { return snake.getPosition(); }
@@ -308,10 +309,6 @@ public abstract class Level {
     //-----------------------------------------------------------------//
 
     public abstract void updateVisibleArea();
-
-    public abstract Bitmap visibleLevelBitmap();
-
-    public abstract Bitmap visibleFruitBitmap();
 
     public abstract int visibleBlocksX();
 
@@ -327,5 +324,9 @@ public abstract class Level {
 
     public Snake getSnake() {
         return snake;
+    }
+
+    public Bitmap[] getVisibleBitmaps() {
+        return visibleBitmaps;
     }
 }

@@ -65,9 +65,7 @@ public class LevelView extends View {
      */
 	private void drawMap(Canvas canvas) {
 		level.updateVisibleArea();
-        Bitmap [] bitmapsToDraw = {level.visibleLevelBitmap(), level.visibleFruitBitmap(),
-                level.getSnake().getScaledBitmap().getScaledBitmap()};
-        for(Bitmap bitmap: bitmapsToDraw) {
+        for(Bitmap bitmap: level.getVisibleBitmaps()) {
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 canvas.drawBitmap(bitmap, 0,
                         (level.getScreenSize().y - bitmap.getHeight()) / 2, paint);

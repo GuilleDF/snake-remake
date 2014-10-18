@@ -11,8 +11,6 @@ public class ScrollingLevel extends Level {
 
 	private Point visibleAreaPosition;
 	private Point visibleBlocks;
-    private Bitmap visibleLevelBitmap;
-    private Bitmap visibleFruitBitmap;
     private final int scrollDistance = 5; //Default for now
 
     public ScrollingLevel(String name, int levelID, LevelType type, Point spawnPoint,
@@ -46,7 +44,7 @@ public class ScrollingLevel extends Level {
             scroll(Direction.LEFT);
         } else if (currentRelativePosition().x > visibleBlocks.x
                 - scrollDistance
-                && visibleAreaPosition.x + visibleBlocks.x < getMaps(0)
+                && visibleAreaPosition.x + visibleBlocks.x < getMaps()[0]
                 .numBlocksX()) {
             scroll(Direction.RIGHT);
         } else if (currentRelativePosition().y < scrollDistance
@@ -54,7 +52,7 @@ public class ScrollingLevel extends Level {
             scroll(Direction.UP);
         } else if (currentRelativePosition().y > visibleBlocks.y
                 - scrollDistance
-                && visibleAreaPosition.y + visibleBlocks.y < getMaps(0)
+                && visibleAreaPosition.y + visibleBlocks.y < getMaps()[0]
                 .numBlocksY()) {
             scroll(Direction.DOWN);
         } else {
@@ -73,22 +71,24 @@ public class ScrollingLevel extends Level {
     private void setVisibleArea(Point origin, Point numBlocks) {
 
         // First we convert 'blocks' into pixels
-        int originPixelsX = origin.x * getMaps(0).getWidth()
-                / getMaps(0).numBlocksX();
-        int originPixelsY = origin.y * getMaps(0).getHeight()
-                / getMaps(0).numBlocksY();
-        int numPixelsX = numBlocks.x * getMaps(0).getWidth()
-                / getMaps(0).numBlocksX();
-        int numPixelsY = numBlocks.y * getMaps(0).getHeight()
-                / getMaps(0).numBlocksY();
+        int originPixelsX = origin.x * getMaps()[0].getWidth()
+                / getMaps()[0].numBlocksX();
+        int originPixelsY = origin.y * getMaps()[0].getHeight()
+                / getMaps()[0].numBlocksY();
+        int numPixelsX = numBlocks.x * getMaps()[0].getWidth()
+                / getMaps()[0].numBlocksX();
+        int numPixelsY = numBlocks.y * getMaps()[0].getHeight()
+                / getMaps()[0].numBlocksY();
 
         // Then we make the visible area bitmaps
-        visibleLevelBitmap = Bitmap.createBitmap(
-                getMaps(0).getScaledBitmap(), originPixelsX,
+        visibleBitmaps[0] = Bitmap.createBitmap(
+                getMaps()[0].getScaledBitmap(), originPixelsX,
                 originPixelsY, numPixelsX, numPixelsY);
-        visibleFruitBitmap = Bitmap.createBitmap(
-                getMaps(1).getScaledBitmap(), originPixelsX,
+        visibleBitmaps[1] = Bitmap.createBitmap(
+                getMaps()[1].getScaledBitmap(), originPixelsX,
                 originPixelsY, numPixelsX, numPixelsY);
+        //The snake bitmap doesn't need to go out of the screen
+        visibleBitmaps[2] = getMaps()[2].getScaledBitmap();
 
         // We update the position and blocks fields
         visibleAreaPosition = new Point(origin);
@@ -144,15 +144,5 @@ public class ScrollingLevel extends Level {
     @Override
     public int visibleBlocksY() {
         return visibleBlocks.y;
-    }
-
-    @Override
-    public Bitmap visibleLevelBitmap() {
-        return visibleLevelBitmap;
-    }
-
-    @Override
-    public Bitmap visibleFruitBitmap() {
-        return visibleFruitBitmap;
     }
 }

@@ -216,8 +216,8 @@ public class Snake {
      *             The Level to use for collision checking
 	 */
 	public void moveOnLevel(Level level) {
-        ScaledBitmap levelMap = level.getMaps(0);
-        ScaledBitmap fruitMap = level.getMaps(1);
+        ScaledBitmap levelMap = level.getMaps()[0];
+        ScaledBitmap fruitMap = level.getMaps()[1];
 		SnakeBlock inFront = new SnakeBlock(position.x, position.y);
 		inFront.move(direction);
 		Point pos = inFront.getCurrentPosition();

@@ -36,15 +36,15 @@ public class ExtraTools {
         int x, y;
         do {
             Random rand = new Random();
-            x = rand.nextInt(level.getMaps(1).numBlocksX());
-            y = rand.nextInt(level.getMaps(1).numBlocksY());
-        } while (level.getMaps(1).getBlock(x, y) != TextureMap.TRANSPARENT ||
-                level.getMaps(2).getBlock(x, y) != TextureMap.TRANSPARENT ||
-                level.getMaps(0).getBlock(x, y) != TextureMap.FLOOR
+            x = rand.nextInt(level.getMaps()[1].numBlocksX());
+            y = rand.nextInt(level.getMaps()[1].numBlocksY());
+        } while (level.getMaps()[1].getBlock(x, y) != TextureMap.TRANSPARENT ||
+                level.getMaps()[2].getBlock(x, y) != TextureMap.TRANSPARENT ||
+                level.getMaps()[0].getBlock(x, y) != TextureMap.FLOOR
                 );
 
         Fruit fruit = new Fruit(x, y);
-        fruit.place(level.getMaps(1));
+        fruit.place(level.getMaps()[1]);
 
         return new Point(x, y);
 

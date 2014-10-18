@@ -141,7 +141,7 @@ public abstract class Level {
     private boolean paused;
 
     private int tickCount;
-    private int speed = 5; // Default for now
+    private int speed = 4; // Default for now
 
     /**
      * Creates the snake and gives it the desired length

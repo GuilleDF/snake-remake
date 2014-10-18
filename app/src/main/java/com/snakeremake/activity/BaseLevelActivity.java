@@ -53,9 +53,9 @@ public class BaseLevelActivity extends Activity {
 		gameOverView.setScore(score);
 		setContentView(gameOverView);
 		gameOverView.requestFocus();
-        if(SplashActivity.getApi()!=null){
-            String id = getString(R.string.leaderboard_points);
-            Games.Leaderboards.submitScore(SplashActivity.getApi(), id, score);
+        if(BaseActivity.isLoggedIn()){
+                String id = getString(R.string.leaderboard_points);
+                Games.Leaderboards.submitScore(BaseActivity.googleApiClient, id, score);
         }
     }
 

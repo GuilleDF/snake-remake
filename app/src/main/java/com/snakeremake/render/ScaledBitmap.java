@@ -46,8 +46,8 @@ public class ScaledBitmap {
 	/**
 	 * Returns the color of a block, according to the original bitmap,
 	 * which may have been modified by {@link #drawToOriginal(int, int, int) drawToOriginal()}
-	 * @param x
-	 * @param y
+	 * @param x x coordinate
+	 * @param y y coordinate
 	 * @return color
 	 */
 	public int getBlock(int x, int y){

@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.snakeremake"
     android:versionCode="1"
-    android:versionName="0.1.0" >
+    android:versionName="0.1.0" > <!-- not used -->
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="19" />
+        android:minSdkVersion="15"
+        android:targetSdkVersion="21" /> <!-- not used -->
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS"></uses-permission>
 

@@ -26,6 +26,7 @@ public class ScrollingLevel extends Level {
 	@Override
 	public LevelView getView(Context ctx) {
         view = new LevelView(ctx, spawnFruits, this);
+
         setVisibleArea(visibleAreaPosition, visibleBlocks);
 
         return view;
@@ -81,14 +82,11 @@ public class ScrollingLevel extends Level {
                 / getMaps()[0].numBlocksY();
 
         // Then we make the visible area bitmaps
-        visibleBitmaps[0] = Bitmap.createBitmap(
-                getMaps()[0].getScaledBitmap(), originPixelsX,
-                originPixelsY, numPixelsX, numPixelsY);
-        visibleBitmaps[1] = Bitmap.createBitmap(
-                getMaps()[1].getScaledBitmap(), originPixelsX,
-                originPixelsY, numPixelsX, numPixelsY);
-        //The snake bitmap doesn't need to go out of the screen
-        visibleBitmaps[2] = getMaps()[2].getScaledBitmap();
+        for(int i=0; i<3; i++) {
+            visibleBitmaps[i] = Bitmap.createBitmap(
+                    getMaps()[i].getScaledBitmap(), originPixelsX,
+                    originPixelsY, numPixelsX, numPixelsY);
+        }
 
         // We update the position and blocks fields
         visibleAreaPosition = new Point(origin);

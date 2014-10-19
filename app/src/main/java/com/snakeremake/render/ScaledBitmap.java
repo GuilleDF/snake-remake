@@ -50,15 +50,9 @@ public class ScaledBitmap {
 	 * @param y y coordinate
 	 * @return color
 	 */
-	public int getBlock(int x, int y){
-		try {
-            return originalBitmap.getPixel(x, y);
-        } catch (IllegalArgumentException e){
-            Log.i("Snake-Remake", "This would've thrown an exception!");
-            return Color.TRANSPARENT; //This is so that when we look for the snake
-                                      //out of bounds, we don't find it
-        }
-	}
+	public int getBlock(int x, int y) {
+        return originalBitmap.getPixel(x, y);
+    }
 
 	/**
 	 * Draws a block with the given texture.

@@ -3,6 +3,7 @@ package com.snakeremake.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -13,7 +14,7 @@ import com.snakeremake.main.Level;
 import com.snakeremake.views.SplashView;
 
 public class SplashActivity extends Activity {
-
+    boolean initBefore;
     @Override
 	public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -28,22 +29,26 @@ public class SplashActivity extends Activity {
 
     @Override
     protected void onStart() {
+        super.onStart();
+        if(initBefore)return;
+        initBefore = true;
         SplashView splash = new SplashView(this);
         setContentView(splash);
-        super.onStart();
         if(!BaseActivity.mExplicitSignOut){BaseActivity.googleApiClient.connect();}
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
+                    boolean started = false;
                     for(int i = 0; i<=5;i++){
                         if(BaseActivity.isLoggedIn()){
+                            started = true;
                             start();
                             break;
                         }
                         Thread.sleep(200);
                     }
-                    start();
+                    if(!started)start();
                 } catch (InterruptedException e) {}
             }
         });
@@ -53,6 +58,7 @@ public class SplashActivity extends Activity {
     private void start(){
         Thread background = new Thread() {
             public void run() {
+                Log.i("Snake-Remake","Starting Splash!");
                 Level.loadLevels(SplashActivity.this);
                 Intent in = new Intent(SplashActivity.this, BaseActivity.class);
                 startActivity(in);

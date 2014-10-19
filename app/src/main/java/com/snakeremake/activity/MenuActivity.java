@@ -1,13 +1,7 @@
 package com.snakeremake.activity;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -16,6 +10,10 @@ import android.widget.ListView;
 
 import com.snakeremake.R;
 import com.snakeremake.menu.Action;
+
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class MenuActivity extends Activity {
 	
@@ -57,11 +55,11 @@ public class MenuActivity extends Activity {
 	
 	private String[] getNames(){ 
 		String[] names = new String[actions.size()];
-		int index = 0;
 		Set<Entry<String, Action>> set = actions.entrySet();
 		for (Entry<String,Action> element:set){			
-			names[index] = element.getKey();
-			index++;
+			String key = element.getKey();
+            String[] parsed = key.split(":");
+            names[Integer.parseInt(parsed[0])] = parsed[1];
 		}
 		return names;
 	}

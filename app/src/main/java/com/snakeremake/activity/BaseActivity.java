@@ -91,11 +91,11 @@ public class BaseActivity  extends BaseGameActivity {
         } else if(view.getId() == R.id.start_button) {
             Intent in = new Intent(this,MenuActivity.class);
             HashMap<String, Action> map = new HashMap<String, Action>();
-            map.put((String) getResources().getText(R.string.single_player),
+            map.put("0:"+ getResources().getText(R.string.single_player),
                     new ActionEnterMenu(Level.generateHashMap()));
-            map.put((String) getResources().getText(R.string.multiplayer),
+            map.put("1:"+ getResources().getText(R.string.multiplayer),
                     null);
-            if(isLoggedIn())map.put((String) getResources().getText(R.string.scoreboards), new ActionScoreboard());
+            if(isLoggedIn())map.put("2:"+ getResources().getText(R.string.scoreboards), new ActionScoreboard());
             in.putExtra("list", map);
             startActivity(in);
         }

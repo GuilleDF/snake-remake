@@ -33,6 +33,7 @@ public abstract class Level {
 	private static AssetManager assetManager;
 
     public static void loadLevels(Context ctx) {
+        levels = new ArrayList<Level>();
 		context = ctx;
 		assetManager = context.getAssets();
 
@@ -47,6 +48,7 @@ public abstract class Level {
 			if (fileName.substring(fileName.lastIndexOf("."))
 							.equals(".level")) {
 				levels.add(loadLevel(fileName));
+                Log.i("Snake-Remake","Loaded level:"+fileName);
 			}
 		}
 	}
@@ -119,8 +121,10 @@ public abstract class Level {
 
 	public static HashMap<String,Action> generateHashMap() {
 		HashMap<String, Action> map = new HashMap<String,Action>();
+        int i = 0;
 		for(Level l:levels){
-			map.put(l.getName(), new ActionGame());
+			map.put(i+":"+l.getName(), new ActionGame());
+            i++;
 		}
 		return map;
 	}

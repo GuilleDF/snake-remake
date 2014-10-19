@@ -18,7 +18,7 @@ public class GestureProcessor implements OnGestureListener {
 
 	@Override
 	public boolean onDown(MotionEvent e) {
-		if (e.getRawX() < 500 && e.getRawY() < 500)
+		if (e.getRawX() < 500 && e.getRawY() < 500) //This causes bug #3 (it activates on the top left 500x500px, surely there is another way)
 			level.onPauseButtonPressed();
 		return true;
 	}
@@ -38,6 +38,12 @@ public class GestureProcessor implements OnGestureListener {
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
+
+        float threshold = 50;
+
+        if(Math.abs(distanceX) < threshold && Math.abs(distanceY) < threshold)
+            return true;
+
 		if (level.isPaused())
 			return true;
 
@@ -73,7 +79,7 @@ public class GestureProcessor implements OnGestureListener {
 			}
 		}
 
-		return false;
+		return true;
 	}
 
 	@Override

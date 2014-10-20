@@ -42,13 +42,12 @@ public class MenuActivity extends Activity {
 	
 	private OnItemClickListener mMessageClickedHandler = new OnItemClickListener() {
 	    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	    	int c = 0;
 	    	for(Entry<String,Action> element: actions.entrySet()){
-	    		if(c==position){
+                int pos = Integer.parseInt(element.getKey().split(":")[0]);
+	    		if(pos==position){
 	    			element.getValue().runAction(ma, parent, v, position, element.getKey(), id);
 	    			break;
 	    		}
-	    		c++;
 	    	}
 	    }
 	};

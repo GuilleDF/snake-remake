@@ -9,16 +9,18 @@ import com.snakeremake.views.LevelView;
 
 public class ScrollingLevel extends Level {
 
-	private Point visibleAreaPosition;
-	private Point visibleBlocks;
+    private Point visibleAreaPosition;
+    private Point visibleBlocks;
     private final int scrollDistance = 5; //Default for now
+    
+    private Point startAreaPosition;
 
     public ScrollingLevel(String name, int levelID, LevelType type, Point spawnPoint,
 			int snakeSize, boolean spawnFruits, int levelResourceID,
 			Point visibleAreaPosition, Point visibleBlocks) {
 		super(name, levelID, type, spawnPoint, snakeSize, spawnFruits,
 				levelResourceID);
-		this.visibleAreaPosition = visibleAreaPosition;
+		this.visibleAreaPosition = startAreaPosition = visibleAreaPosition;
 		this.visibleBlocks = visibleBlocks;
 
 	}
@@ -142,5 +144,11 @@ public class ScrollingLevel extends Level {
     @Override
     public int visibleBlocksY() {
         return visibleBlocks.y;
+    }
+    
+    @Override
+    public void onLose() {
+    	visibleAreaPosition = startAreaPosition;
+    	super.onLose();
     }
 }

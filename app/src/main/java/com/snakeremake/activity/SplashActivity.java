@@ -13,6 +13,8 @@ import com.google.android.gms.plus.Plus;
 import com.snakeremake.main.Level;
 import com.snakeremake.views.SplashView;
 
+import java.util.concurrent.TimeUnit;
+
 public class SplashActivity extends Activity {
     boolean initBefore;
     @Override
@@ -34,32 +36,18 @@ public class SplashActivity extends Activity {
         initBefore = true;
         SplashView splash = new SplashView(this);
         setContentView(splash);
-        if(!BaseActivity.mExplicitSignOut){BaseActivity.googleApiClient.connect();}
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    boolean started = false;
-                    for(int i = 0; i<=5;i++){
-                        if(BaseActivity.isLoggedIn()){
-                            started = true;
-                            start();
-                            break;
-                        }
-                        Thread.sleep(200);
-                    }
-                    if(!started)start();
-                } catch (InterruptedException e) {}
-            }
-        });
-        t.start();
+        start();
     }
+
 
     private void start(){
         Thread background = new Thread() {
             public void run() {
                 Log.i("Snake-Remake","Starting Splash!");
                 Level.loadLevels(SplashActivity.this);
+                if(!BaseActivity.mExplicitSignOut){BaseActivity.googleApiClient.connect();
+                    BaseActivity.googleApiClient.blockingConnect(5, TimeUnit.SECONDS);
+                }
                 Intent in = new Intent(SplashActivity.this, BaseActivity.class);
                 startActivity(in);
                 finish();

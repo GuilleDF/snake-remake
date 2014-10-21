@@ -1,9 +1,24 @@
-# Level 1
-
-name = Level 1
-type = fixed
-levelID = 1
-spawnPoint = 3,17
-snakeSize = 5
-spawnFruits = true
-levelImageName = bg_2020
+{
+   "name": "Level 1",
+   "type": "fixed",
+   "levelID": 1,
+   "spawnPoint": 3.17,
+   "spawnFruits": true,
+   "levelImageName":"bg_2020",
+   "bit_ids":[
+       {
+       "bit_id":"0x000000",
+       "bit_texture":1,
+       "bit_type":"wall"
+       },
+       {
+       "bit_id":"0x000001",
+       "bit_texture":2,
+       "bit_type":"wall"
+       },
+       {
+       "bit_id":"0x000002",
+       "bit_type":"spawn"
+       }
+   ]
+}

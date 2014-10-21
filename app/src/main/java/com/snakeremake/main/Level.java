@@ -17,14 +17,16 @@ import com.snakeremake.render.TextureMap;
 import com.snakeremake.render.TextureMapper;
 import com.snakeremake.utils.Direction;
 import com.snakeremake.utils.ExtraTools;
+import com.snakeremake.utils.StreamUtils;
 import com.snakeremake.views.LevelView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 
 public abstract class Level {
 	public static List<Level> levels = new ArrayList<Level>();
@@ -54,31 +56,35 @@ public abstract class Level {
 	}
 
 	private static Level loadLevel(String fileName) {
-		try {
-			Properties prop = new Properties();
-			InputStream stream = assetManager.open("levels/" + fileName);
-			prop.load(stream);
-			String name = prop.getProperty("name");
-			LevelType type = LevelType.valueOf(prop.getProperty("type"));
-			int levelID = Integer.parseInt(prop.getProperty("levelID"));
-			Point spawnPoint = decodePoint(prop.getProperty("spawnPoint"));
-			int snakeSize = Integer.parseInt(prop.getProperty("snakeSize"));
-			boolean spawnFruits = Boolean.parseBoolean(prop
-					.getProperty("spawnFruits"));
-			int levelResourceID = R.drawable.class.getDeclaredField(
-					prop.getProperty("levelImageName")).getInt(null);
-			if (type.equals(LevelType.fixed)) {
-				return new StaticLevel(name, levelID, type, spawnPoint, snakeSize,
-						spawnFruits, levelResourceID);
-			} else {
-				Point visibleAreaPosition = decodePoint(prop
-						.getProperty("visibleAreaPosition"));
-				Point visibleBlocks = decodePoint(prop
-						.getProperty("visibleBlocks"));
-				return new ScrollingLevel(name, levelID, type, spawnPoint, snakeSize,
-						spawnFruits, levelResourceID, visibleAreaPosition,
-						visibleBlocks);
-			}
+        try {
+            JSONObject jObject = new JSONObject(StreamUtils.loadJSONFromAsset(assetManager,fileName));
+            LevelType type = LevelType.valueOf(jObject.getString("type")); //Loads level type
+            int levelID = jObject.getInt("levelID"); // LevelId
+            int snakeSize = jObject.getInt("Size");  // Snake size
+            boolean spawnFruits = jObject.getBoolean("spawnFruits");
+            int  imageName = R.drawable.class.getDeclaredField(
+                    jObject.getString("levelImageName")).getInt(null);
+            String name = jObject.getString("name");
+            JSONArray array = jObject.getJSONArray("bit_ids");
+            List<PixelData> pixelDataList = new ArrayList<PixelData>();
+            for(int i = 0; i< array.length();i++){
+                PixelData data;
+                JSONObject pixelInfo = array.getJSONObject(i);
+                String id = pixelInfo.getString("bit_id");
+                PixelType pixelType = PixelType.valueOf(pixelInfo.getString("bit_type"));
+                if(pixelInfo.has("bit_texture")){
+                    int texture = pixelInfo.getInt("bit_texture");
+                    data = new PixelData(id,pixelType,texture);
+                }else{
+                    data = new PixelData(id,pixelType);
+                }
+                pixelDataList.add(data);
+            }
+            if(type==LevelType.fixed){
+                return new StaticLevel(name,levelID,type,snakeSize,spawnFruits,imageName,pixelDataList);
+            }else{
+                 //TODO return new ScrollingLevel(name,levelID,type,snakeSize,spawnFruits,imageName,pixelDataList);
+            }
 		} catch (Exception e) {
 			Log.e("Snake-Remake", "Exception in loadLevel(): " + e.toString());
 		}
@@ -89,11 +95,6 @@ public abstract class Level {
 		return name;
 	}
 
-	private static Point decodePoint(String property) {
-		String[] str = property.split(",");
-		return new Point(Integer.parseInt(str[0]), Integer.parseInt(str[1]));
-	}
-
 	protected String name;
 	protected LevelType type;
 	protected int levelID;
@@ -101,19 +102,19 @@ public abstract class Level {
 	protected int snakeSize;
 	protected boolean spawnFruits;
 	protected int levelResourceID;
-
+    protected List<PixelData> pixelData;
     protected LevelView view;
 
-	public Level(String name, int levelID, LevelType type, Point spawnPoint, int snakeSize,
-			boolean spawnFruits, int levelResourceID) {
+	public Level(String name, int levelID, LevelType type, int snakeSize,
+			boolean spawnFruits, int levelResourceID, List<PixelData> pixelData) {
 		this.name = name;
 		this.levelID = levelID;
 		this.type = type;
-		this.spawnPoint = spawnPoint;
 		this.snakeSize = snakeSize;
 		this.spawnFruits = spawnFruits;
 		this.levelResourceID = levelResourceID;
-	}
+        this.pixelData = pixelData;
+    }
 
 
 	public abstract LevelView getView(Context context);
@@ -171,19 +172,19 @@ public abstract class Level {
      * Loads the map and creates the fruitmap
      */
     public void loadMap() {
+
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inDither = false;
         options.inScaled = false;
         background = BitmapFactory.decodeResource(view.getResources(),
                 levelResourceID, options);
 
-        maps[0] = new ScaledBitmap(background);
+        maps[0] = new ScaledBitmap(background); //Level
 
         maps[1] = new ScaledBitmap(
                 Bitmap.createBitmap(background.getWidth(),
-                        background.getHeight(), Bitmap.Config.ARGB_8888)
-        );
-       maps[1].getOriginalBitmap().eraseColor(TextureMap.TRANSPARENT);
+                        background.getHeight(), Bitmap.Config.ARGB_8888));
+        maps[1].getOriginalBitmap().eraseColor(TextureMap.TRANSPARENT);
 
     }
 

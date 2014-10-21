@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Snake Remake</string>
     <string name="game_over">GAME OVER</string>
     <string name="title_activity_menu">MenuActivity</string>
@@ -12,4 +13,6 @@
     <string name="gamehelper_sign_in_failed">Sign in failed</string>
     <string name="gamehelper_app_misconfigured">App misconfigured</string>
     <string name="gamehelper_license_failed">License check failed</string>
+    <string name="title_activity_google_play_services">GooglePlayServicesActivity</string>
+
 </resources>

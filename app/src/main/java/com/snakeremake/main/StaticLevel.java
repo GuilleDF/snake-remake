@@ -1,16 +1,16 @@
 package com.snakeremake.main;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Point;
 
 import com.snakeremake.views.LevelView;
 
+import java.util.List;
+
 public class StaticLevel extends Level {
 
-	public StaticLevel(String name, int levelID, LevelType type, Point spawnPoint,
-			int snakeSize, boolean spawnFruits, int levelResourceID) {
-		super(name, levelID, type, spawnPoint, snakeSize, spawnFruits, levelResourceID);
+	public StaticLevel(String name, int levelID, LevelType type, int snakeSize,
+                       boolean spawnFruits, int levelResourceID, List<PixelData> pixelData) {
+		super(name, levelID, type, snakeSize, spawnFruits, levelResourceID, pixelData);
 	}
 
 	@Override

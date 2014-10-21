@@ -7,17 +7,18 @@ import android.graphics.Point;
 import com.snakeremake.utils.Direction;
 import com.snakeremake.views.LevelView;
 
+import java.util.List;
+
 public class ScrollingLevel extends Level {
 
 	private Point visibleAreaPosition;
 	private Point visibleBlocks;
     private final int scrollDistance = 5; //Default for now
 
-    public ScrollingLevel(String name, int levelID, LevelType type, Point spawnPoint,
-			int snakeSize, boolean spawnFruits, int levelResourceID,
+    public ScrollingLevel(String name, int levelID, LevelType type, int snakeSize,
+                          boolean spawnFruits, int levelResourceID, List<PixelData> pixelData,
 			Point visibleAreaPosition, Point visibleBlocks) {
-		super(name, levelID, type, spawnPoint, snakeSize, spawnFruits,
-				levelResourceID);
+		super(name,levelID,type,snakeSize,spawnFruits,levelResourceID,pixelData);
 		this.visibleAreaPosition = visibleAreaPosition;
 		this.visibleBlocks = visibleBlocks;
 
